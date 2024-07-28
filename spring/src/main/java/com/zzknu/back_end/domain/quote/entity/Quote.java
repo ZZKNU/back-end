@@ -22,5 +22,8 @@ public class Quote {
     private CertifiedType certified;
     private Long liked;
 
+    // 연관 관계 많음
+
+    // toEntity. Builder
 
 }
