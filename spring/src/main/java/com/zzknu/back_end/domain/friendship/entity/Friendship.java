@@ -1,10 +1,8 @@
 package com.zzknu.back_end.domain.friendship.entity;
 
+import com.zzknu.back_end.domain.user.entity.User;
 import com.zzknu.back_end.global.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,8 +11,17 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Friendship extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "friendship_id")
     private Long id;
-    private Long friendId;
+
+    @ManyToOne(fetch = FetchType.LAZY) // Friendship이 여러 개일 수 있는 User와의 관계
+    @JoinColumn(name = "from_user", nullable = false) // from_user를 외래 키로 설정
+    private User from_user; // 친구 추가 건 사람
+
+    @ManyToOne // 여러 개의 Friendship에 연결된 User
+    @JoinColumn(name = "to_user", nullable = false) // to_user를 외래 키로 설정
+    private User to_user; // 친구 추가 받은 사람
+
     // User와 N:1 관계
     // toEntity, Builder 패턴 추가 여부
 }
