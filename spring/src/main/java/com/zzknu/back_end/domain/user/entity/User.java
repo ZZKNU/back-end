@@ -1,5 +1,6 @@
 package com.zzknu.back_end.domain.user.entity;
 
+import com.zzknu.back_end.domain.friendship.entity.Friendship;
 import com.zzknu.back_end.domain.user.entity.type.AuthorityType;
 import com.zzknu.back_end.global.BaseEntityWithUpdatedAt;
 import jakarta.persistence.*;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -30,6 +32,9 @@ public class User extends BaseEntityWithUpdatedAt {
     private Date birthDate;
 
     private AuthorityType authority;
+
+    @OneToMany(mappedBy = "from_user") // Friendship에서 fromUser로 매핑
+    private List<Friendship> friendships; // 친구 추가 건
 
     // 많은 연관 관계
 
