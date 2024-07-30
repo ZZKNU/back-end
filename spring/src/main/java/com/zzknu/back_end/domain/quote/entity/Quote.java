@@ -12,6 +12,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -48,6 +49,10 @@ public class Quote {
     // 3. Message 와 1:N 매핑
     @OneToMany(mappedBy = "quote")
     private List<Message> messageList;
+
+    public void increaseLikes() {
+        this.liked += 1;
+    }
 
     public void update(QuoteUpdateRequestDto quoteUpdateRequestDto) {
         this.title = quoteUpdateRequestDto.getTitle();
