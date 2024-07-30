@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class QuoteRequestDto {
+public class QuoteUpdateRequestDto {
     private Long id;
     private String title;
     @Enumerated(EnumType.STRING)
