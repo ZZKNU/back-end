@@ -22,6 +22,11 @@ public class Friendship extends BaseEntity {
     @JoinColumn(name = "to_user", nullable = false) // to_user를 외래 키로 설정
     private User to_user; // 친구 추가 받은 사람
 
+    public Friendship(User fromUser, User toUser) {
+        this.from_user = fromUser;
+        this.to_user = toUser;
+    }
+
     // User와 N:1 관계
     // toEntity, Builder 패턴 추가 여부
 }
