@@ -36,6 +36,9 @@ public class UserService {
     // 이름으로 사용자 검색
     public Page<FriendInfoDto> findUsersByName(String name, Pageable pageable) {
         Page<User> users =  userRepository.findByNickName(name, pageable);
+        if(users.isEmpty()) {
+            return Page.empty();
+        }
         Page<FriendInfoDto> friendInfoDtos = users.map(FriendInfoDto::new);
         return friendInfoDtos;
     }

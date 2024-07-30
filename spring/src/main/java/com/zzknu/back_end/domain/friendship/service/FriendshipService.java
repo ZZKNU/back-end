@@ -27,6 +27,9 @@ public class FriendshipService {
     // 친구 목록 - 팔로우
     public Page<FriendInfoDto> getFollowing(Long userId, Pageable pageable) {
         Page<User> followingUsers = friendshipRepository.findFollowingByUserId(userId, pageable);
+        if (followingUsers.isEmpty()) {
+            return Page.empty();
+        }
         Page<FriendInfoDto> followings = followingUsers.map(FriendInfoDto::new);
         return followings;
     }
@@ -34,6 +37,9 @@ public class FriendshipService {
     // 친구 목록 - 팔로워
     public Page<FriendInfoDto> getFollowers(Long userId, Pageable pageable) {
         Page<User> followerUsers = friendshipRepository.findFollowersByUserId(userId, pageable);
+        if (followerUsers.isEmpty()) {
+            return Page.empty();
+        }
         Page<FriendInfoDto> followers = followerUsers.map(FriendInfoDto::new);
         return followers;
     }
