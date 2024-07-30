@@ -3,6 +3,8 @@ package com.zzknu.back_end.domain.quote.entity;
 import com.zzknu.back_end.domain.category.entity.Category;
 import com.zzknu.back_end.domain.likedquote.entity.LikedQuote;
 import com.zzknu.back_end.domain.message.entity.Message;
+import com.zzknu.back_end.domain.quote.dto.QuoteRequestDto;
+import com.zzknu.back_end.domain.quote.dto.QuoteUpdateRequestDto;
 import com.zzknu.back_end.domain.quote.entity.type.CertifiedType;
 import com.zzknu.back_end.domain.quote.entity.type.QuoteType;
 import jakarta.persistence.*;
@@ -10,6 +12,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,7 +26,7 @@ public class Quote {
     private String title;
 
     @Enumerated(EnumType.STRING)
-    private QuoteType type;
+    private QuoteType quoteType;
 
     private String content;
 
@@ -47,12 +50,29 @@ public class Quote {
     @OneToMany(mappedBy = "quote")
     private List<Message> messageList;
 
-    // toEntity
+    public void increaseLikes() {
+        this.liked += 1;
+    }
+
+    public void update(QuoteUpdateRequestDto quoteUpdateRequestDto) {
+        this.title = quoteUpdateRequestDto.getTitle();
+        this.content = quoteUpdateRequestDto.getContent();
+        this.author = quoteUpdateRequestDto.getAuthor();
+        this.quoteType = quoteUpdateRequestDto.getQuoteType();
+    }
+
+    public static Quote toEntity(QuoteRequestDto quoteRequestDto) {
+        return Quote.builder().title(quoteRequestDto.getTitle())
+                .content(quoteRequestDto.getContent())
+                .author(quoteRequestDto.getAuthor())
+                .quoteType(quoteRequestDto.getQuoteType())
+                .build();
+    }
 
     @Builder
-    public Quote(String title, QuoteType type, String content, String author, Long liked, Category category) {
+    public Quote(String title, QuoteType quoteType, String content, String author, Category category) {
         this.title = title;
-        this.type = type;
+        this.quoteType = quoteType;
         this.content = content;
         this.author = author;
         this.category = category;
