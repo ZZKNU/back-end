@@ -1,7 +1,6 @@
 package com.zzknu.back_end.domain.user.service;
 
 import com.zzknu.back_end.domain.friendship.dto.FriendInfoDto;
-import com.zzknu.back_end.domain.user.dto.UserRequestDto;
 import com.zzknu.back_end.domain.user.dto.UserUpdateDto;
 import com.zzknu.back_end.domain.user.entity.User;
 import com.zzknu.back_end.domain.user.repository.UserRepository;
@@ -36,7 +35,7 @@ public class UserService {
 
     // 이름으로 사용자 검색
     public Page<FriendInfoDto> findUsersByName(String name, Pageable pageable) {
-        Page<User> users =  userRepository.findByNickName(name, pageable);
+        Page<User> users =  userRepository.findByNickname(name, pageable);
         if(users.isEmpty()) {
             return Page.empty();
         }

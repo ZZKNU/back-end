@@ -21,8 +21,8 @@ public class MessageResponse {
     public MessageResponse(Message message) {
         this.sender_id = message.getSendUser().getId();
         this.receiver_id = message.getRecvUser().getId();
-        this.sender_nickName = message.getSendUser().getNickName();
-        this.receiver_nickName = message.getRecvUser().getNickName();
+        this.sender_nickName = message.getSendUser().getNickname();
+        this.receiver_nickName = message.getRecvUser().getNickname();
         this.message_title = message.getTitle();
         this.messageQuote = new  MessageQuoteDto(message.getQuote());
         this.createdAt = message.getCreatedAt();

@@ -19,7 +19,7 @@ public class FriendInfoDto {
     public FriendInfoDto(User user) {
         this.id = user.getId();
         this.email = user.getEmail();
-        this.nickName = user.getNickName();
-        this.birthDate = user.getBirthDate();
+        this.nickName = user.getNickname();
+        this.birthDate = user.getBirthdate();
     }
 }
