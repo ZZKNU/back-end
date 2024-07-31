@@ -50,7 +50,7 @@ public class User extends BaseEntityWithUpdatedAt {
     private List<MyFortune> myFortunes;
 
     // 4. Message 와 1:N 매핑 -> friendship 보고 따라했음
-    @OneToMany(mappedBy = "send_user")
+    @OneToMany(mappedBy = "sendUser")
     private List<Message> messages;
 
     // builder, toEntity

@@ -32,9 +32,9 @@ public class MessageService {
 
     // 받은 메시지 보기
     public Page<MessageListDto> getReceivedMessages(Long userId, Pageable pageable) {
-
+        User user = userService.findById(userId);
         // 받은 메시지 조회
-        Page<Message> messages = messageRepository.findByRecv_user_Id(userId, pageable);
+        Page<Message> messages = messageRepository.findByRecvUser(user, pageable);
 
         // MessageListDto로 변환하여 반환
         return messages.map(MessageListDto::new);
@@ -42,9 +42,9 @@ public class MessageService {
 
     // 보낸 메시지 보기
     public Page<MessageListDto> getSentMessages(Long userId, Pageable pageable) {
-
+        User user = userService.findById(userId);
         // 보낸 메시지 조회
-        Page<Message> messages = messageRepository.findBySend_user_Id(userId, pageable);
+        Page<Message> messages = messageRepository.findBySendUser(user, pageable);
 
         // MessageListDto로 변환하여 반환
         return messages.map(MessageListDto::new);

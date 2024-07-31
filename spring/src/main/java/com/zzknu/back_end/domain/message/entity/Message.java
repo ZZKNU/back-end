@@ -17,13 +17,13 @@ public class Message extends BaseEntity {
 
     // 1. 보내는 User 와 N:1 매핑
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "send_user")
-    private User send_user;
+    @JoinColumn(name = "sendUser")
+    private User sendUser;
 
     // 1-1. 받는 User 와 N:1 매핑
     @ManyToOne
-    @JoinColumn(name = "recv_user")
-    private User recv_user;
+    @JoinColumn(name = "recvUser")
+    private User recvUser;
 
     // 2. Quote 와 N:1 매핑
     @ManyToOne
@@ -37,8 +37,8 @@ public class Message extends BaseEntity {
     private Boolean isRead = false;
 
     public Message(User sendUser, User toUser, String title, Quote quote) {
-        this.send_user = sendUser;
-        this.recv_user = toUser;
+        this.sendUser = sendUser;
+        this.recvUser = toUser;
         this.title = title;
         this.quote = quote;
     }

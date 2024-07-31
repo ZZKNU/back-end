@@ -15,10 +15,10 @@ public class MessageResponse {
     private LocalDateTime createdAt;
 
     public MessageResponse(Message message) {
-        this.sender_id = message.getSend_user().getId();
-        this.receiver_id = message.getRecv_user().getId();
-        this.sender_nickName = message.getSend_user().getNickName();
-        this.receiver_nickName = message.getRecv_user().getNickName();
+        this.sender_id = message.getSendUser().getId();
+        this.receiver_id = message.getRecvUser().getId();
+        this.sender_nickName = message.getSendUser().getNickName();
+        this.receiver_nickName = message.getRecvUser().getNickName();
         this.message_title = message.getTitle();
         this.messageQuote = new  MessageQuoteDto(message.getQuote());
         this.createdAt = message.getCreatedAt();
