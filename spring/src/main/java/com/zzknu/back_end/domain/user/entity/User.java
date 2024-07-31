@@ -1,5 +1,6 @@
 package com.zzknu.back_end.domain.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.zzknu.back_end.domain.friendship.entity.Friendship;
 import com.zzknu.back_end.domain.likedquote.entity.LikedQuote;
 import com.zzknu.back_end.domain.message.entity.Message;
@@ -14,7 +15,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -44,7 +44,12 @@ public class User extends BaseEntityWithUpdatedAt {
 
     // 1. Friendship 과 1:N 매핑
     @OneToMany(mappedBy = "from_user") // Friendship에서 fromUser로 매핑
+    @JsonBackReference
     private List<Friendship> friendships; // 친구 추가 건
+
+    @OneToMany(mappedBy = "to_user")
+    @JsonBackReference
+    private List<Friendship> toFriendships;
 
     // 2. LikedQuote 와 1:N 매핑
     @OneToMany(mappedBy = "user")
