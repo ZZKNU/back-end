@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Builder
@@ -12,7 +13,7 @@ import java.util.Date;
 @Setter
 public class UserUpdateDto {
     private String nickName;
-    private Date birthDate;
+    private LocalDate birthDate;
 
     public void update(User existingUser) {
         existingUser.setNickname(this.nickName);

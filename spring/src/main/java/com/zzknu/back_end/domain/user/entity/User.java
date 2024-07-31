@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class User extends BaseEntityWithUpdatedAt {
     @Column(unique = true, nullable = false)
     private String nickname;
 
-    private Date birthdate;
+    private LocalDate birthdate;
 
     private AuthorityType authority;
 
@@ -67,7 +68,7 @@ public class User extends BaseEntityWithUpdatedAt {
     }
 
     @Builder
-    public User(String email, String password, String nickName, Date birthDate) {
+    public User(String email, String password, String nickName, LocalDate birthDate) {
         this.email = email;
         this.password = password;
         this.nickname = nickName;
