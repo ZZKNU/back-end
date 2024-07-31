@@ -14,10 +14,10 @@ public class MessageListDto {
     private boolean isRead;
 
     public MessageListDto(Message message) {
-        this.sender_id = message.getSend_user().getId();
-        this.receiver_id = message.getRecv_user().getId();
-        this.sender_nickName = message.getSend_user().getNickName();
-        this.receiver_nickName = message.getRecv_user().getNickName();
+        this.sender_id = message.getSendUser().getId();
+        this.receiver_id = message.getRecvUser().getId();
+        this.sender_nickName = message.getSendUser().getNickName();
+        this.receiver_nickName = message.getRecvUser().getNickName();
         this.message_title = message.getTitle();
         this.createdAt = message.getCreatedAt();
         this.isRead = message.getIsRead();
