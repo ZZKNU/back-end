@@ -1,10 +1,13 @@
 package com.zzknu.back_end.domain.user.dto;
 
 import com.zzknu.back_end.domain.user.entity.User;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+
+@Builder
 @Getter
 @Setter
 public class UserUpdateDto {
@@ -12,7 +15,7 @@ public class UserUpdateDto {
     private Date birthDate;
 
     public void update(User existingUser) {
-        existingUser.setNickName(this.nickName);
-        existingUser.setBirthDate(this.birthDate);
+        existingUser.setNickname(this.nickName);
+        existingUser.setBirthdate(this.birthDate);
     }
 }

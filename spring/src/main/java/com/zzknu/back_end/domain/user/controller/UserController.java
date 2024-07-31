@@ -1,5 +1,6 @@
 package com.zzknu.back_end.domain.user.controller;
 
+import com.zzknu.back_end.domain.user.dto.UserRequestDto;
 import com.zzknu.back_end.domain.user.dto.UserUpdateDto;
 import com.zzknu.back_end.domain.user.entity.User;
 import com.zzknu.back_end.domain.user.service.UserService;
