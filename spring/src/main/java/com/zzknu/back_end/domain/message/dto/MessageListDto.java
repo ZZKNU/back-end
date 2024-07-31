@@ -1,9 +1,13 @@
 package com.zzknu.back_end.domain.message.dto;
 
 import com.zzknu.back_end.domain.message.entity.Message;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@Setter
+@Getter
 public class MessageListDto {
     private Long sender_id;
     private Long receiver_id;

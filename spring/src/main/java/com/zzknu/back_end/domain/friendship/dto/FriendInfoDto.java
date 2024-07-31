@@ -3,10 +3,12 @@ package com.zzknu.back_end.domain.friendship.dto;
 import com.zzknu.back_end.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
 @Getter
+@Setter
 @AllArgsConstructor
 public class FriendInfoDto {
     private Long id;

@@ -2,9 +2,13 @@ package com.zzknu.back_end.domain.message.dto;
 
 import com.zzknu.back_end.domain.message.entity.Message;
 import com.zzknu.back_end.domain.quote.dto.MessageQuoteDto;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 public class MessageResponse {
     private Long sender_id;
     private Long receiver_id;
