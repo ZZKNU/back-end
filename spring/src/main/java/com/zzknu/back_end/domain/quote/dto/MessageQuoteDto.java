@@ -1,7 +1,11 @@
 package com.zzknu.back_end.domain.quote.dto;
 
 import com.zzknu.back_end.domain.quote.entity.Quote;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 public class MessageQuoteDto {
     private Long quote_id;
     private String quote_title;

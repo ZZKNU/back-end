@@ -4,6 +4,7 @@ import com.zzknu.back_end.domain.user.dto.UserRequestDto;
 import com.zzknu.back_end.domain.user.dto.UserUpdateDto;
 import com.zzknu.back_end.domain.user.entity.User;
 import com.zzknu.back_end.domain.user.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ public class UserController {
     private final UserService userService;
 
     // 개인 정보 확인 (GET)
+    @Operation(summary = "개인 정보 확인")
     @GetMapping
     public ResponseEntity<User> getUserInfo(@RequestParam Long userId) {
         User user = userService.getUserById(userId);
@@ -22,12 +24,14 @@ public class UserController {
     }
 
     // 개인 정보 수정 (PUT)
+    @Operation(summary = "개인 정보 수정")
     @PutMapping
     public ResponseEntity<User> updateUserInfo(@RequestParam Long userId, @RequestBody UserUpdateDto updatedUser) {
         User user = userService.updateUser(userId, updatedUser);
         return ResponseEntity.ok(user);
     }
 
+    @Operation(summary = "회원 탈퇴")
     @DeleteMapping
     public ResponseEntity<Void> deleteUserInfo(@RequestParam Long userId) {
         userService.deleteUser(userId);
