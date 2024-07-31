@@ -63,7 +63,12 @@ public class QuoteService {
         // quoteRepository.findById(id).ifPresent(Quote::increaseLikes); -> 이렇게 한 줄로 줄여짐;;
     }
 
-    // 제목, 작성자로 검색 기능 and 카테고리별 정렬 기능 미구현
+    // 작성자로 검색
+    public List<Quote> getQuotesByAuthor(String author) {
+        return quoteRepository.findByAuthor(author);
+    }
+
+    // 제목 검색 기능 and 카테고리별 정렬 기능 미구현
 
 
 }

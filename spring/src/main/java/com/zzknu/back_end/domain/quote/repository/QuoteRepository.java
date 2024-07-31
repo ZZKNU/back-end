@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface QuoteRepository extends JpaRepository<Quote, Long> {
     List<Quote> findByCertified(CertifiedType certifiedType);
+    List<Quote> findByAuthor(String author);
 }
