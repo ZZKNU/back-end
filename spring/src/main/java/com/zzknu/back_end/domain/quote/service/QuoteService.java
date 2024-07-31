@@ -38,12 +38,12 @@ public class QuoteService {
 
     // 모든 글귀 열람 (WAIT)
     public List<Quote> getWaitQuotes(){
-        return quoteRepository.findByCertified(CertifiedType.WAIT);
+        return quoteRepository.findByCertifiedIn(List.of(CertifiedType.WAIT, CertifiedType.REJECTED));
     }
 
     // 모든 글귀 열람 (인증된)
     public List<Quote> getAcceptedQuotes(){
-        return quoteRepository.findByCertified(CertifiedType.ACCEPTED);
+        return quoteRepository.findByCertifiedIn(List.of(CertifiedType.ACCEPTED));
     }
 
     // id로 글귀 1개 찾기 - 특정 글귀 열람, 글귀 좋아요에도 쓰일 듯
