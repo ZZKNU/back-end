@@ -4,9 +4,11 @@ import com.zzknu.back_end.domain.friendship.entity.Friendship;
 import com.zzknu.back_end.domain.likedquote.entity.LikedQuote;
 import com.zzknu.back_end.domain.message.entity.Message;
 import com.zzknu.back_end.domain.myfortune.entity.MyFortune;
+import com.zzknu.back_end.domain.user.dto.UserRequestDto;
 import com.zzknu.back_end.domain.user.entity.type.AuthorityType;
 import com.zzknu.back_end.global.BaseEntityWithUpdatedAt;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,9 +32,9 @@ public class User extends BaseEntityWithUpdatedAt {
     private String password;
 
     @Column(unique = true, nullable = false)
-    private String nickName;
+    private String nickname;
 
-    private Date birthDate;
+    private Date birthdate;
 
     private AuthorityType authority;
 
@@ -54,4 +56,20 @@ public class User extends BaseEntityWithUpdatedAt {
     private List<Message> messages;
 
     // builder, toEntity
+    public static User toEntity(UserRequestDto userRequestDto) {
+        return User.builder()
+                .email(userRequestDto.getEmail())
+                .password(userRequestDto.getPassword())
+                .nickName(userRequestDto.getNickname())
+                .birthDate(userRequestDto.getBirthdate())
+                .build();
+    }
+
+    @Builder
+    public User(String email, String password, String nickName, Date birthDate) {
+        this.email = email;
+        this.password = password;
+        this.nickname = nickName;
+        this.birthdate = birthDate;
+    }
 }
