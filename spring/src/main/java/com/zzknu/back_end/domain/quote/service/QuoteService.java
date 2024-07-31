@@ -15,7 +15,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QuoteService {
     private final QuoteRepository quoteRepository;
-
+    public Quote findById(Long quoteId) {
+        return quoteRepository.findById(quoteId)
+                .orElseThrow(() -> new RuntimeException("Quote not found"));
+    }
     // 글귀 등록,
     public Quote createQuote(QuoteRequestDto quoteRequestDto) {
         return quoteRepository.save(Quote.toEntity(quoteRequestDto));
@@ -69,6 +72,4 @@ public class QuoteService {
     }
 
     // 제목 검색 기능 and 카테고리별 정렬 기능 미구현
-
-
 }

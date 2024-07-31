@@ -14,7 +14,6 @@ public class Message extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "message_id")
     private Long id;
-    private Long toId;
 
     // 1. 보내는 User 와 N:1 매핑
     @ManyToOne(fetch = FetchType.LAZY)
@@ -32,4 +31,19 @@ public class Message extends BaseEntity {
     private Quote quote;
     // Builder toEntity
     // 많은 고민이 필요하겠군
+
+    private String title;
+
+    private Boolean isRead = false;
+
+    public Message(User sendUser, User toUser, String title, Quote quote) {
+        this.send_user = sendUser;
+        this.recv_user = toUser;
+        this.title = title;
+        this.quote = quote;
+    }
+
+    public void setIsRead() {
+        this.isRead = true;
+    }
 }
