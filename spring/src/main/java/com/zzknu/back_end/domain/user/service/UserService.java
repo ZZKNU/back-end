@@ -1,6 +1,7 @@
 package com.zzknu.back_end.domain.user.service;
 
 import com.zzknu.back_end.domain.friendship.dto.FriendInfoDto;
+import com.zzknu.back_end.domain.user.dto.UserRequestDto;
 import com.zzknu.back_end.domain.user.dto.UserUpdateDto;
 import com.zzknu.back_end.domain.user.entity.User;
 import com.zzknu.back_end.domain.user.repository.UserRepository;
