@@ -61,8 +61,8 @@ public class QuoteController {
     }
 
     @Operation(summary = "작가명으로 글귀 검색")
-    @GetMapping({"/challenges", "/quotes"})
-    public ResponseEntity<List<Quote>> getQuotesByAuthor(@RequestBody String author){
+    @GetMapping({"/challenges/search", "/quotes/search"})
+    public ResponseEntity<List<Quote>> getQuotesByAuthor(@RequestParam("author") String author){
         return ResponseEntity.ok(quoteService.getQuotesByAuthor(author));
     }
 }
