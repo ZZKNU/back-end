@@ -3,6 +3,7 @@ package com.zzknu.back_end.domain.user.dto;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Builder
@@ -11,5 +12,5 @@ public class UserRequestDto {
     private String email;
     private String password;
     private String nickname;
-    private Date birthdate;
+    private LocalDate birthdate;
 }

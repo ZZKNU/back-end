@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -14,7 +15,7 @@ public class FriendInfoDto {
     private Long id;
     private String email;
     private String nickName;
-    private Date birthDate;
+    private LocalDate birthDate;
 
     public FriendInfoDto(User user) {
         this.id = user.getId();

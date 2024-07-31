@@ -25,7 +25,6 @@ public class FriendshipController {
         Page<FriendInfoDto> users = userService.findUsersByName(name, pageable);
         return ResponseEntity.ok(users);
     }
-
     // 친구 추가
     @Operation(summary = "친구 추가")
     @PostMapping("/{user_id}/{friend_id}")
@@ -33,6 +32,7 @@ public class FriendshipController {
         Friendship friendship = friendshipService.addFriend(user_id, friend_id);
         return ResponseEntity.ok(friendship);
     }
+
 
     // 친구 목록 - 팔로우
     @Operation(summary = "친구 목록 - 팔로우")
