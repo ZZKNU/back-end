@@ -36,9 +36,10 @@ public class User extends BaseEntityWithUpdatedAt {
     @Column(unique = true, nullable = false)
     private String nickname;
 
+    @Column(nullable = false)
     private LocalDate birthdate;
 
-    private AuthorityType authority;
+    private AuthorityType authority = AuthorityType.USER;
 
 
     // 1. Friendship 과 1:N 매핑
