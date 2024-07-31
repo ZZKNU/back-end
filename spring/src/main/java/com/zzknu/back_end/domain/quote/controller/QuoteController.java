@@ -35,18 +35,23 @@ public class QuoteController {
     }
 
     // 맞는지 모르겠음
-    @PutMapping({"/challenges", "/quotes"})
-    public void increaseLikes(@RequestBody Long id){
+    @PutMapping({"/challenges/{id}", "/quotes/{id}"})
+    public void increaseLikes(@PathVariable Long id){
         quoteService.increaseLikes(id);
     }
 
-    @GetMapping({"/challenges", "/quotes"})
-    public Quote getQuoteById(@RequestParam("id") Long id) {
+    @GetMapping({"/challenges/{id}", "/quotes/{id}"})
+    public Quote getQuoteById(@PathVariable Long id) {
         return quoteService.getQuoteById(id);
     }
 
-    @DeleteMapping("/challenges")
-    public void deleteQuoteById(@RequestParam("id") Long id) {
+    @DeleteMapping("/challenges/{id}")
+    public void deleteQuoteById(@PathVariable Long id) {
         quoteService.deleteQuoteById(id);
+    }
+
+    @GetMapping({"/challenges", "/quotes"})
+    public List<Quote> getQuotesByAuthor(@RequestBody String author){
+        return quoteService.getQuotesByAuthor(author);
     }
 }

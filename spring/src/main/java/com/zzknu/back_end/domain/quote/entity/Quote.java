@@ -35,7 +35,7 @@ public class Quote {
     @Enumerated(EnumType.STRING)
     private CertifiedType certified;
 
-    private Long liked;
+    private int liked = 0;
 
     // 1. Category와 N:1 매핑
     @ManyToOne
