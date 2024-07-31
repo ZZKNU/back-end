@@ -26,7 +26,7 @@ public class Quote {
     private String title;
 
     @Enumerated(EnumType.STRING)
-    private QuoteType quoteType;
+    private QuoteType type;
 
     private String content;
 
@@ -58,7 +58,7 @@ public class Quote {
         this.title = quoteUpdateRequestDto.getTitle();
         this.content = quoteUpdateRequestDto.getContent();
         this.author = quoteUpdateRequestDto.getAuthor();
-        this.quoteType = quoteUpdateRequestDto.getQuoteType();
+        this.type = quoteUpdateRequestDto.getQuoteType();
     }
 
     public static Quote toEntity(QuoteRequestDto quoteRequestDto) {
@@ -72,7 +72,7 @@ public class Quote {
     @Builder
     public Quote(String title, QuoteType quoteType, String content, String author, Category category) {
         this.title = title;
-        this.quoteType = quoteType;
+        this.type = quoteType;
         this.content = content;
         this.author = author;
         this.category = category;
