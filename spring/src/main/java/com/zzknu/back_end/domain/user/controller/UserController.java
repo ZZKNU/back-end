@@ -28,8 +28,8 @@ public class UserController {
     // 개인 정보 수정 (PUT)
     @Operation(summary = "개인 정보 수정")
     @PutMapping
-    public ResponseEntity<User> updateUserInfo(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, @RequestBody UserUpdateDto updatedUser) {
-        User user = userService.updateUser(accessToken, updatedUser);
+    public ResponseEntity<UserInfoDto> updateUserInfo(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, @RequestBody UserUpdateDto updatedUser) {
+        UserInfoDto user = userService.updateUser(accessToken, updatedUser);
         return ResponseEntity.ok(user);
     }
 
