@@ -3,6 +3,7 @@ package com.zzknu.back_end.domain.friendship.service;
 import com.zzknu.back_end.domain.friendship.dto.FriendInfoDto;
 import com.zzknu.back_end.domain.friendship.entity.Friendship;
 import com.zzknu.back_end.domain.friendship.repository.FriendshipRepository;
+import com.zzknu.back_end.domain.jwt.JwtService;
 import com.zzknu.back_end.domain.user.entity.User;
 import com.zzknu.back_end.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -15,18 +16,22 @@ import org.springframework.data.domain.Pageable;
 public class FriendshipService {
     private final FriendshipRepository friendshipRepository;
     private final UserService userService;
+    private final JwtService jwtService;
 
     // 친구 추가
-    public Friendship addFriend(Long userId, Long friendUserId) {
-        User fromUser = userService.findById(userId);
+    public FriendInfoDto addFriend(String accessToken, Long friendUserId) {
+        String email = jwtService.getEmailFromToken(accessToken);
+        User fromUser = userService.findByEmail(email);
         User toUser = userService.findById(friendUserId);
         Friendship friendship = new Friendship(fromUser, toUser);
-        return friendshipRepository.save(friendship);
+        friendshipRepository.save(friendship);
+        return new FriendInfoDto(toUser);
     }
 
     // 친구 목록 - 팔로우
-    public Page<FriendInfoDto> getFollowing(Long userId, Pageable pageable) {
-        Page<User> followingUsers = friendshipRepository.findFollowingByUserId(userId, pageable);
+    public Page<FriendInfoDto> getFollowing(String accessToken, Pageable pageable) {
+        String email = jwtService.getEmailFromToken(accessToken);
+        Page<User> followingUsers = friendshipRepository.findFollowingByEmail(email, pageable);
         if (followingUsers.isEmpty()) {
             return Page.empty();
         }
@@ -35,8 +40,9 @@ public class FriendshipService {
     }
 
     // 친구 목록 - 팔로워
-    public Page<FriendInfoDto> getFollowers(Long userId, Pageable pageable) {
-        Page<User> followerUsers = friendshipRepository.findFollowersByUserId(userId, pageable);
+    public Page<FriendInfoDto> getFollowers(String accessToken, Pageable pageable) {
+        String email = jwtService.getEmailFromToken(accessToken);
+        Page<User> followerUsers = friendshipRepository.findFollowersByEmail(email, pageable);
         if (followerUsers.isEmpty()) {
             return Page.empty();
         }

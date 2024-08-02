@@ -1,5 +1,6 @@
 package com.zzknu.back_end.domain.message.service;
 
+import com.zzknu.back_end.domain.jwt.JwtService;
 import com.zzknu.back_end.domain.message.dto.MessageListDto;
 import com.zzknu.back_end.domain.message.dto.MessageRequest;
 import com.zzknu.back_end.domain.message.dto.MessageResponse;
@@ -21,18 +22,22 @@ public class MessageService {
     private final MessageRepository messageRepository;
     private final UserService userService;
     private final QuoteService quoteService;
+    private final JwtService jwtService;
     // 메시지 전송
-    public Message sendMessage(Long userId, Long toId, MessageRequest messageRequest) {
-        User send_user = userService.findById(userId);
+    public MessageResponse sendMessage(String accessToken, Long toId, MessageRequest messageRequest) {
+        String email = jwtService.getEmailFromToken(accessToken);
+        User send_user = userService.findByEmail(email);
         User to_user = userService.findById(toId);
         Quote quote = quoteService.findById(messageRequest.getQuote_id());
         Message message = new Message(send_user, to_user, messageRequest.getTitle(),quote);
-        return messageRepository.save(message);
+        messageRepository.save(message);
+        return new MessageResponse(message);
     }
 
     // 받은 메시지 보기
-    public Page<MessageListDto> getReceivedMessages(Long userId, Pageable pageable) {
-        User user = userService.findById(userId);
+    public Page<MessageListDto> getReceivedMessages(String accessToken, Pageable pageable) {
+        String email = jwtService.getEmailFromToken(accessToken);
+        User user = userService.findByEmail(email);
         // 받은 메시지 조회
         Page<Message> messages = messageRepository.findByRecvUser(user, pageable);
 
@@ -41,8 +46,9 @@ public class MessageService {
     }
 
     // 보낸 메시지 보기
-    public Page<MessageListDto> getSentMessages(Long userId, Pageable pageable) {
-        User user = userService.findById(userId);
+    public Page<MessageListDto> getSentMessages(String accessToken, Pageable pageable) {
+        String email = jwtService.getEmailFromToken(accessToken);
+        User user = userService.findByEmail(email);
         // 보낸 메시지 조회
         Page<Message> messages = messageRepository.findBySendUser(user, pageable);
 

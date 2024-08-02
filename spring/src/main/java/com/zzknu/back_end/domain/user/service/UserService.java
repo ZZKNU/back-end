@@ -1,6 +1,9 @@
 package com.zzknu.back_end.domain.user.service;
 
+import com.zzknu.back_end.config.JwtConfig;
 import com.zzknu.back_end.domain.friendship.dto.FriendInfoDto;
+import com.zzknu.back_end.domain.jwt.JwtService;
+import com.zzknu.back_end.domain.user.dto.UserInfoDto;
 import com.zzknu.back_end.domain.user.dto.UserUpdateDto;
 import com.zzknu.back_end.domain.user.entity.User;
 import com.zzknu.back_end.domain.user.repository.UserRepository;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final JwtService jwtService;
 
     // 사용자 정보 조회
     public User getUserById(Long userId) {
@@ -20,16 +24,18 @@ public class UserService {
     }
 
     // 사용자 정보 수정
-    public User updateUser(Long userId, UserUpdateDto updatedUser) {
-        User existingUser = findById(userId);
+    public User updateUser(String accessToken, UserUpdateDto updatedUser) {
+        String email = jwtService.getEmailFromToken(accessToken);
+        User existingUser = findByEmail(email);
         updatedUser.update(existingUser);
 
         return userRepository.save(existingUser);
     }
 
     // 회원 탈퇴
-    public void deleteUser(Long userId) {
-        User existingUser = findById(userId);
+    public void deleteUser(String accessToken) {
+        String email = jwtService.getEmailFromToken(accessToken);
+        User existingUser = findByEmail(email);
         userRepository.delete(existingUser);
     }
 
@@ -47,5 +53,18 @@ public class UserService {
     public User findById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    // email로 사용자 검색
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    //  사용자 정보 불러오기
+    public UserInfoDto getUserInfo(String accessToken) {
+        String email = jwtService.getEmailFromToken(accessToken);
+        User user = findByEmail(email);
+        return new UserInfoDto(user);
     }
 }

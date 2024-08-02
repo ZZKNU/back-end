@@ -15,4 +15,10 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
 
     @Query("SELECT f.from_user FROM Friendship f WHERE f.to_user.id = :userId")
     Page<User> findFollowersByUserId(Long userId, Pageable pageable);
+
+    @Query("SELECT f.to_user FROM Friendship f WHERE f.from_user.email = :email")
+    Page<User> findFollowingByEmail(String email, Pageable pageable);
+
+    @Query("SELECT f.from_user FROM Friendship f WHERE f.to_user.email = :email")
+    Page<User> findFollowersByEmail(String email, Pageable pageable);
 }
