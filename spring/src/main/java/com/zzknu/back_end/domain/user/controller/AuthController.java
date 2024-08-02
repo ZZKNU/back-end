@@ -1,6 +1,7 @@
 package com.zzknu.back_end.domain.user.controller;
 
 import com.zzknu.back_end.domain.user.dto.LoginRequestDto;
+import com.zzknu.back_end.domain.user.dto.Response;
 import com.zzknu.back_end.domain.user.dto.UserRequestDto;
 import com.zzknu.back_end.domain.user.entity.User;
 import com.zzknu.back_end.domain.user.service.AuthService;
@@ -21,14 +22,14 @@ public class AuthController {
     // 로그인
     @Operation(summary = "로그인")
     @PostMapping("/login")
-    public ResponseEntity<Long> login(@RequestBody LoginRequestDto loginRequestDto) {
+    public ResponseEntity<Response> login(@RequestBody LoginRequestDto loginRequestDto) {
         return ResponseEntity.ok(authService.login(loginRequestDto));
     }
 
     // 회원 가입
     @Operation(summary = "회원 가입")
     @PostMapping("/join")
-    public ResponseEntity<User> createUser(@RequestBody UserRequestDto userRequestDto) {
+    public ResponseEntity<Response> createUser(@RequestBody UserRequestDto userRequestDto) {
         return ResponseEntity.ok(authService.createUser(userRequestDto));
     }
 }
