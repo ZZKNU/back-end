@@ -43,11 +43,11 @@ public class User extends BaseEntityWithUpdatedAt {
 
 
     // 1. Friendship 과 1:N 매핑
-    @OneToMany(mappedBy = "from_user") // Friendship에서 fromUser로 매핑
+    @OneToMany(mappedBy = "from_user", cascade = CascadeType.ALL) // Friendship에서 fromUser로 매핑
     @JsonBackReference
     private List<Friendship> friendships; // 친구 추가 건
 
-    @OneToMany(mappedBy = "to_user")
+    @OneToMany(mappedBy = "to_user", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Friendship> toFriendships;
 
