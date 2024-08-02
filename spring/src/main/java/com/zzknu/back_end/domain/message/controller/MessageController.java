@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,25 +21,25 @@ public class MessageController {
 
     // 메시지 전송
     @Operation(summary = "메시지 전송")
-    @PostMapping("/{user_id}/{to_id}")
-    public ResponseEntity<Message> sendMessage(@PathVariable Long user_id, @PathVariable Long to_id, @RequestBody MessageRequest messageRequest) {
-        Message sentMessage = messageService.sendMessage(user_id, to_id, messageRequest);
+    @PostMapping("/{to_id}")
+    public ResponseEntity<MessageResponse> sendMessage(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, @PathVariable Long to_id, @RequestBody MessageRequest messageRequest) {
+        MessageResponse sentMessage = messageService.sendMessage(accessToken, to_id, messageRequest);
         return ResponseEntity.ok(sentMessage);
     }
 
     // 받은 메시지 보기 (목록)
     @Operation(summary = "받은 메시지 보기 (목록)")
-    @GetMapping("/receive/{user_id}")
-    public ResponseEntity<Page<MessageListDto>> getReceivedMessages(@PathVariable Long user_id, Pageable pageable) {
-        Page<MessageListDto> receivedMessages = messageService.getReceivedMessages(user_id, pageable);
+    @GetMapping("/receive")
+    public ResponseEntity<Page<MessageListDto>> getReceivedMessages(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, Pageable pageable) {
+        Page<MessageListDto> receivedMessages = messageService.getReceivedMessages(accessToken, pageable);
         return ResponseEntity.ok(receivedMessages);
     }
 
     // 보낸 메시지 보기 (목록)
     @Operation(summary = "보낸 메시지 보기 (목록)")
-    @GetMapping("/post/{user_id}")
-    public ResponseEntity<Page<MessageListDto>> getSentMessages(@PathVariable Long user_id, Pageable pageable) {
-        Page<MessageListDto> sentMessages = messageService.getSentMessages(user_id, pageable);
+    @GetMapping("/post")
+    public ResponseEntity<Page<MessageListDto>> getSentMessages(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, Pageable pageable) {
+        Page<MessageListDto> sentMessages = messageService.getSentMessages(accessToken, pageable);
         return ResponseEntity.ok(sentMessages);
     }
 
