@@ -1,6 +1,8 @@
 package com.zzknu.back_end.domain.user.service;
 
+import com.zzknu.back_end.config.JwtConfig;
 import com.zzknu.back_end.domain.friendship.dto.FriendInfoDto;
+import com.zzknu.back_end.domain.user.dto.UserInfoDto;
 import com.zzknu.back_end.domain.user.dto.UserUpdateDto;
 import com.zzknu.back_end.domain.user.entity.User;
 import com.zzknu.back_end.domain.user.repository.UserRepository;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final JwtConfig jwtConfig;
 
     // 사용자 정보 조회
     public User getUserById(Long userId) {
@@ -20,8 +23,9 @@ public class UserService {
     }
 
     // 사용자 정보 수정
-    public User updateUser(Long userId, UserUpdateDto updatedUser) {
-        User existingUser = findById(userId);
+    public User updateUser(String accessToken, UserUpdateDto updatedUser) {
+        String email = convertTokenToEmail(accessToken);
+        User existingUser = findByEmail(email);
         updatedUser.update(existingUser);
 
         return userRepository.save(existingUser);
@@ -47,5 +51,23 @@ public class UserService {
     public User findById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    // email로 사용자 검색
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    // token에서 email 뽑아오기
+    public String convertTokenToEmail(String accessToken) {
+        return jwtConfig.extractEmail(accessToken);
+    }
+
+    //  사용자 정보 불러오기
+    public UserInfoDto getUserInfo(String accessToken) {
+        String email = convertTokenToEmail(accessToken);
+        User user = findByEmail(email);
+        return new UserInfoDto(user);
     }
 }
