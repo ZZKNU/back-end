@@ -19,12 +19,13 @@ public class FriendshipService {
     private final JwtService jwtService;
 
     // 친구 추가
-    public Friendship addFriend(String accessToken, Long friendUserId) {
+    public FriendInfoDto addFriend(String accessToken, Long friendUserId) {
         String email = jwtService.getEmailFromToken(accessToken);
         User fromUser = userService.findByEmail(email);
         User toUser = userService.findById(friendUserId);
         Friendship friendship = new Friendship(fromUser, toUser);
-        return friendshipRepository.save(friendship);
+        friendshipRepository.save(friendship);
+        return new FriendInfoDto(toUser);
     }
 
     // 친구 목록 - 팔로우

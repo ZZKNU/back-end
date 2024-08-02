@@ -1,7 +1,6 @@
 package com.zzknu.back_end.domain.friendship.controller;
 
 import com.zzknu.back_end.domain.friendship.dto.FriendInfoDto;
-import com.zzknu.back_end.domain.friendship.entity.Friendship;
 import com.zzknu.back_end.domain.friendship.service.FriendshipService;
 import com.zzknu.back_end.domain.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,16 +28,16 @@ public class FriendshipController {
 
     // 친구 추가
     @Operation(summary = "친구 추가")
-    @PostMapping("/{user_id}/{friend_id}")
-    public ResponseEntity<Friendship> addFriend(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, @RequestParam Long friend_id) {
-        Friendship friendship = friendshipService.addFriend(accessToken, friend_id);
-        return ResponseEntity.ok(friendship);
+    @PostMapping("/{friend_id}")
+    public ResponseEntity<FriendInfoDto> addFriend(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, @RequestParam Long friend_id) {
+        FriendInfoDto friend = friendshipService.addFriend(accessToken, friend_id);
+        return ResponseEntity.ok(friend);
     }
 
 
     // 친구 목록 - 팔로우
     @Operation(summary = "친구 목록 - 팔로우")
-    @GetMapping("/follow/{user_id}")
+    @GetMapping("/follow")
     public ResponseEntity<Page<FriendInfoDto>> getFollowing(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, Pageable pageable) {
         Page<FriendInfoDto> following = friendshipService.getFollowing(accessToken, pageable);
         return ResponseEntity.ok(following);
@@ -46,7 +45,7 @@ public class FriendshipController {
 
     // 친구 목록 - 팔로워
     @Operation(summary = "친구 목록 - 팔로워")
-    @GetMapping("/follower/{user_id}")
+    @GetMapping("/follower")
     public ResponseEntity<Page<FriendInfoDto>> getFollowers(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, Pageable pageable) {
         Page<FriendInfoDto> followers = friendshipService.getFollowers(accessToken, pageable);
         return ResponseEntity.ok(followers);
