@@ -35,8 +35,8 @@ public class UserController {
 
     @Operation(summary = "회원 탈퇴")
     @DeleteMapping
-    public ResponseEntity<Void> deleteUserInfo(@RequestParam Long userId) {
-        userService.deleteUser(userId);
+    public ResponseEntity<Void> deleteUserInfo(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
+        userService.deleteUser(accessToken);
         return ResponseEntity.noContent().build();
     }
 
