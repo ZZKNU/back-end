@@ -24,12 +24,12 @@ public class UserService {
     }
 
     // 사용자 정보 수정
-    public User updateUser(String accessToken, UserUpdateDto updatedUser) {
+    public UserInfoDto updateUser(String accessToken, UserUpdateDto updatedUser) {
         String email = jwtService.getEmailFromToken(accessToken);
         User existingUser = findByEmail(email);
         updatedUser.update(existingUser);
-
-        return userRepository.save(existingUser);
+        userRepository.save(existingUser);
+        return new UserInfoDto(existingUser);
     }
 
     // 회원 탈퇴

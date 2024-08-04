@@ -33,7 +33,6 @@ public class Quote {
 
     private String author;
 
-    @Enumerated(EnumType.STRING)
     private Boolean certified = false;
 
     private int liked = 0;
@@ -53,7 +52,7 @@ public class Quote {
 
     // 4. User 와 1:N 매핑
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     public void increaseLikes() {
