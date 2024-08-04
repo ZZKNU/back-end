@@ -32,4 +32,17 @@ public class AuthService {
         String accessToken = jwtService.generateToken(userRequestDto.getEmail());
         return new Response(accessToken);
     }
+
+    // 이메일 중복 확인
+    public Boolean emailExists(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
+
+    // 닉네임 중복 확인
+    public Boolean nicknameExists(String nickname) {
+        return userRepository.findByNickname(nickname).isPresent();
+    }
+
+
+
 }
