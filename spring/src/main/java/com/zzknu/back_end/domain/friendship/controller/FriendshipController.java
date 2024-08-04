@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/friends")
 @RequiredArgsConstructor
@@ -21,9 +23,9 @@ public class FriendshipController {
     // 친구 검색 - 근데 수정 필요할듯
     @Operation(summary = "친구 검색")
     @GetMapping("/search/{name}")
-    public ResponseEntity<Page<FriendInfoDto>> searchFriends(@PathVariable String name, Pageable pageable) {
+    public ResponseEntity<List<FriendInfoDto>> searchFriends(@PathVariable String name, Pageable pageable) {
         Page<FriendInfoDto> users = userService.findUsersByName(name, pageable);
-        return ResponseEntity.ok(users);
+        return ResponseEntity.ok(users.getContent());
     }
 
     // 친구 추가
@@ -38,17 +40,17 @@ public class FriendshipController {
     // 친구 목록 - 팔로우
     @Operation(summary = "친구 목록 - 팔로우")
     @GetMapping("/follow")
-    public ResponseEntity<Page<FriendInfoDto>> getFollowing(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, Pageable pageable) {
+    public ResponseEntity<List<FriendInfoDto>> getFollowing(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, Pageable pageable) {
         Page<FriendInfoDto> following = friendshipService.getFollowing(accessToken, pageable);
-        return ResponseEntity.ok(following);
+        return ResponseEntity.ok(following.getContent());
     }
 
     // 친구 목록 - 팔로워
     @Operation(summary = "친구 목록 - 팔로워")
     @GetMapping("/follower")
-    public ResponseEntity<Page<FriendInfoDto>> getFollowers(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, Pageable pageable) {
+    public ResponseEntity<List<FriendInfoDto>> getFollowers(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, Pageable pageable) {
         Page<FriendInfoDto> followers = friendshipService.getFollowers(accessToken, pageable);
-        return ResponseEntity.ok(followers);
+        return ResponseEntity.ok(followers.getContent());
     }
 
     // 친구 삭제
