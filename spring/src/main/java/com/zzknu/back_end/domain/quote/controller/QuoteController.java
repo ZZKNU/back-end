@@ -2,10 +2,12 @@ package com.zzknu.back_end.domain.quote.controller;
 
 import com.zzknu.back_end.domain.quote.dto.QuoteRequestDto;
 import com.zzknu.back_end.domain.quote.dto.QuoteUpdateRequestDto;
+import com.zzknu.back_end.domain.quote.dto.ResponseSuccessful;
 import com.zzknu.back_end.domain.quote.entity.Quote;
 import com.zzknu.back_end.domain.quote.service.QuoteService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,14 +20,14 @@ public class QuoteController {
 
     @Operation(summary = "글귀 작성")
     @PostMapping("/challenges")
-    public ResponseEntity<Quote> createQuote(@RequestBody QuoteRequestDto quoteRequestDto) {
-        return ResponseEntity.ok(quoteService.createQuote(quoteRequestDto));
+    public ResponseEntity<ResponseSuccessful> createQuote(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, @RequestBody QuoteRequestDto quoteRequestDto) {
+        return ResponseEntity.ok(quoteService.createQuote(accessToken, quoteRequestDto));
     }
 
     @Operation(summary = "작성 글귀 수정")
     @PutMapping("/challenges")
-    public ResponseEntity<Quote> updateQuote(@RequestBody QuoteUpdateRequestDto quoteUpdateRequestDto) {
-        return ResponseEntity.ok(quoteService.updateQuote(quoteUpdateRequestDto));
+    public ResponseEntity<ResponseSuccessful> updateQuote(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, @RequestBody QuoteUpdateRequestDto quoteUpdateRequestDto) {
+        return ResponseEntity.ok(quoteService.updateQuote(accessToken, quoteUpdateRequestDto));
     }
 
     @Operation(summary = "베스트 도전 글귀 불러오기")
