@@ -8,10 +8,7 @@ import com.zzknu.back_end.domain.user.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,4 +29,18 @@ public class AuthController {
     public ResponseEntity<Response> createUser(@RequestBody UserRequestDto userRequestDto) {
         return ResponseEntity.ok(authService.createUser(userRequestDto));
     }
+
+    @Operation(summary = "이메일 중복 확인")
+    @GetMapping("/email")
+    public ResponseEntity<Boolean> emailExist(@RequestParam String email) {
+        return ResponseEntity.ok(authService.emailExists(email));
+    }
+
+    @Operation(summary = "닉네임 중복 확인")
+    @GetMapping("/nickname")
+    public ResponseEntity<Boolean> nicknameExist(@RequestParam String nickname) {
+        return ResponseEntity.ok(authService.nicknameExists(nickname));
+    }
+
+
 }
