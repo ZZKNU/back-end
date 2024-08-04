@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface QuoteRepository extends JpaRepository<Quote, Long> {
-    List<Quote> findByCertifiedIn(List<CertifiedType> certifiedTypes);
+    List<Quote> findByCertified(Boolean certified);
     List<Quote> findByAuthor(String author);
 }

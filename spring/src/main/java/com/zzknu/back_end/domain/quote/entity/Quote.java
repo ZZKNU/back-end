@@ -7,6 +7,7 @@ import com.zzknu.back_end.domain.quote.dto.QuoteRequestDto;
 import com.zzknu.back_end.domain.quote.dto.QuoteUpdateRequestDto;
 import com.zzknu.back_end.domain.quote.entity.type.CertifiedType;
 import com.zzknu.back_end.domain.quote.entity.type.QuoteType;
+import com.zzknu.back_end.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,7 +34,7 @@ public class Quote {
     private String author;
 
     @Enumerated(EnumType.STRING)
-    private CertifiedType certified;
+    private Boolean certified = false;
 
     private int liked = 0;
 
@@ -50,6 +51,11 @@ public class Quote {
     @OneToMany(mappedBy = "quote")
     private List<Message> messageList;
 
+    // 4. User 와 1:N 매핑
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(nullable = false)
+    private User user;
+
     public void increaseLikes() {
         this.liked += 1;
     }
@@ -61,20 +67,23 @@ public class Quote {
         this.type = quoteUpdateRequestDto.getQuoteType();
     }
 
-    public static Quote toEntity(QuoteRequestDto quoteRequestDto) {
+    public static Quote toEntity(User userInfo, QuoteRequestDto quoteRequestDto) {
         return Quote.builder().title(quoteRequestDto.getTitle())
                 .content(quoteRequestDto.getContent())
                 .author(quoteRequestDto.getAuthor())
                 .quoteType(quoteRequestDto.getQuoteType())
+                .user(userInfo)
                 .build();
     }
 
     @Builder
-    public Quote(String title, QuoteType quoteType, String content, String author, Category category) {
+    public Quote(String title, QuoteType quoteType, String content, String author, Category category, User user) {
         this.title = title;
         this.type = quoteType;
         this.content = content;
         this.author = author;
         this.category = category;
+        this.user = user;
+        this.certified = false;
     }
 }

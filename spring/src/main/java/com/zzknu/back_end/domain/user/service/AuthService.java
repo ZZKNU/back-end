@@ -7,6 +7,7 @@ import com.zzknu.back_end.domain.user.dto.Response;
 import com.zzknu.back_end.domain.user.dto.UserRequestDto;
 import com.zzknu.back_end.domain.user.entity.User;
 import com.zzknu.back_end.domain.user.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,9 +28,23 @@ public class AuthService {
     }
 
     // 회원 가입 (사용자 생성)
+    @Transactional
     public Response createUser(UserRequestDto userRequestDto) {
         userRepository.save(User.toEntity(userRequestDto));
         String accessToken = jwtService.generateToken(userRequestDto.getEmail());
         return new Response(accessToken);
     }
+
+    // 이메일 중복 확인
+    public Boolean emailExists(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
+
+    // 닉네임 중복 확인
+    public Boolean nicknameExists(String nickname) {
+        return userRepository.findByNickname(nickname).isPresent();
+    }
+
+
+
 }
