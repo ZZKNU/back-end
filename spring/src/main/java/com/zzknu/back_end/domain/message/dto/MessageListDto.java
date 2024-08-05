@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public class MessageListDto {
+    private Long id;
     private Long sender_id;
     private Long receiver_id;
     private String sender_nickName;
@@ -18,6 +19,7 @@ public class MessageListDto {
     private boolean isRead;
 
     public MessageListDto(Message message) {
+        this.id = message.getId();
         this.sender_id = message.getSendUser().getId();
         this.receiver_id = message.getRecvUser().getId();
         this.sender_nickName = message.getSendUser().getNickname();
