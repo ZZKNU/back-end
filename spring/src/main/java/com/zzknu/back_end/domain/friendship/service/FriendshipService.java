@@ -6,6 +6,7 @@ import com.zzknu.back_end.domain.friendship.repository.FriendshipRepository;
 import com.zzknu.back_end.domain.jwt.JwtService;
 import com.zzknu.back_end.domain.user.entity.User;
 import com.zzknu.back_end.domain.user.service.UserService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -19,13 +20,19 @@ public class FriendshipService {
     private final JwtService jwtService;
 
     // 친구 추가
+    @Transactional
     public FriendInfoDto addFriend(String accessToken, Long friendUserId) {
         String email = jwtService.getEmailFromToken(accessToken);
         User fromUser = userService.findByEmail(email);
         User toUser = userService.findById(friendUserId);
-        Friendship friendship = new Friendship(fromUser, toUser);
-        friendshipRepository.save(friendship);
-        return new FriendInfoDto(toUser);
+        if (friendshipRepository.findFriendshipByIdAndId(fromUser.getId(), toUser.getId()).isPresent()) {
+            return new FriendInfoDto(new User());
+        }
+        else{
+            Friendship friendship = new Friendship(fromUser, toUser);
+            friendshipRepository.save(friendship);
+            return new FriendInfoDto(toUser);
+        }
     }
 
     // 친구 목록 - 팔로우
