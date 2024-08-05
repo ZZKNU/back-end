@@ -13,6 +13,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/messages")
 @RequiredArgsConstructor
@@ -30,17 +32,17 @@ public class MessageController {
     // 받은 메시지 보기 (목록)
     @Operation(summary = "받은 메시지 보기 (목록)")
     @GetMapping("/receive")
-    public ResponseEntity<Page<MessageListDto>> getReceivedMessages(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, Pageable pageable) {
+    public ResponseEntity<List<MessageListDto>> getReceivedMessages(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, Pageable pageable) {
         Page<MessageListDto> receivedMessages = messageService.getReceivedMessages(accessToken, pageable);
-        return ResponseEntity.ok(receivedMessages);
+        return ResponseEntity.ok(receivedMessages.getContent());
     }
 
     // 보낸 메시지 보기 (목록)
     @Operation(summary = "보낸 메시지 보기 (목록)")
     @GetMapping("/post")
-    public ResponseEntity<Page<MessageListDto>> getSentMessages(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, Pageable pageable) {
+    public ResponseEntity<List<MessageListDto>> getSentMessages(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, Pageable pageable) {
         Page<MessageListDto> sentMessages = messageService.getSentMessages(accessToken, pageable);
-        return ResponseEntity.ok(sentMessages);
+        return ResponseEntity.ok(sentMessages.getContent());
     }
 
     // 특정 메시지 열람
