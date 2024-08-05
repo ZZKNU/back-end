@@ -1,6 +1,9 @@
 package com.zzknu.back_end.domain.jwt;
 
 import com.zzknu.back_end.config.JwtConfig;
+import com.zzknu.back_end.domain.user.entity.User;
+import com.zzknu.back_end.domain.user.entity.type.AuthorityType;
+import com.zzknu.back_end.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,4 +23,5 @@ public class JwtService {
     public String getEmailFromToken(String token) {
         return jwtConfig.extractEmail(token);
     }
+
 }

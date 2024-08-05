@@ -6,6 +6,7 @@ import com.zzknu.back_end.domain.jwt.JwtService;
 import com.zzknu.back_end.domain.user.dto.UserInfoDto;
 import com.zzknu.back_end.domain.user.dto.UserUpdateDto;
 import com.zzknu.back_end.domain.user.entity.User;
+import com.zzknu.back_end.domain.user.entity.type.AuthorityType;
 import com.zzknu.back_end.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -41,12 +42,11 @@ public class UserService {
 
     // 이름으로 사용자 검색
     public Page<FriendInfoDto> findUsersByName(String name, Pageable pageable) {
-        Page<User> users =  userRepository.findByNickname(name, pageable);
+        Page<User> users = userRepository.findByNickname(name, pageable);
         if(users.isEmpty()) {
             return Page.empty();
         }
-        Page<FriendInfoDto> friendInfoDtos = users.map(FriendInfoDto::new);
-        return friendInfoDtos;
+        return users.map(FriendInfoDto::new);
     }
 
     // Id로 사용자 검색
@@ -66,5 +66,17 @@ public class UserService {
         String email = jwtService.getEmailFromToken(accessToken);
         User user = findByEmail(email);
         return new UserInfoDto(user);
+    }
+
+    // 유저 권한 변경
+    public boolean updateUserType(Long user_id, AuthorityType authorityType) {
+        User user = findById(user_id);
+        user.setAuthority(authorityType);
+        userRepository.save(user);
+        return true;
+    }
+
+    public Page<User> getAllUser(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 }

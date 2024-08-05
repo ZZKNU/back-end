@@ -31,13 +31,13 @@ public class AuthController {
     }
 
     @Operation(summary = "이메일 중복 확인")
-    @GetMapping("/email")
+    @GetMapping("/email/{email}")
     public ResponseEntity<Boolean> emailExist(@RequestParam String email) {
         return ResponseEntity.ok(authService.emailExists(email));
     }
 
     @Operation(summary = "닉네임 중복 확인")
-    @GetMapping("/nickname")
+    @GetMapping("/nickname/{nickname}")
     public ResponseEntity<Boolean> nicknameExist(@RequestParam String nickname) {
         return ResponseEntity.ok(authService.nicknameExists(nickname));
     }
