@@ -67,13 +67,13 @@ public class QuoteService {
 
     // 모든 글귀 열람 (WAIT)
     public Page<QuoteResponse> getWaitQuotes(Pageable pageable){
-        Page <Quote> quotes = quoteRepository.findByCertified(false, pageable);
+        Page <Quote> quotes = quoteRepository.findByCertified(Boolean.FALSE, pageable);
         return quotes.map(QuoteResponse::new);
     }
 
     // 모든 글귀 열람 (인증된)
     public Page<QuoteResponse> getAcceptedQuotes(Pageable pageable){
-        Page <Quote> quotes = quoteRepository.findByCertified(true, pageable);
+        Page <Quote> quotes = quoteRepository.findByCertified(Boolean.TRUE, pageable);
         return quotes.map(QuoteResponse::new);
     }
 

@@ -34,7 +34,7 @@ public class Quote extends BaseEntityWithUpdatedAt {
 
     private String author;
 
-    private Boolean certified = false;
+    private Boolean certified = Boolean.FALSE;
 
     private int liked = 0;
 
@@ -84,6 +84,6 @@ public class Quote extends BaseEntityWithUpdatedAt {
         this.author = author;
         this.category = category;
         this.user = user;
-        this.certified = false;
+        this.certified = Boolean.FALSE;
     }
 }
