@@ -27,4 +27,9 @@ public class LikedQuote extends BaseEntity {
     private Quote quote;
 
     // 흠 얘도 Builder 필요한가? toEntity도... 아마 필요없을 것 같은데
+
+    public LikedQuote(User user, Quote quote) {
+        this.user = user;
+        this.quote = quote;
+    }
 }

@@ -1,6 +1,8 @@
 package com.zzknu.back_end.domain.quote.service;
 
 import com.zzknu.back_end.domain.jwt.JwtService;
+import com.zzknu.back_end.domain.likedquote.entity.LikedQuote;
+import com.zzknu.back_end.domain.likedquote.service.LikedQuoteService;
 import com.zzknu.back_end.domain.quote.dto.QuoteRequestDto;
 import com.zzknu.back_end.domain.quote.dto.QuoteResponse;
 import com.zzknu.back_end.domain.quote.dto.QuoteUpdateRequestDto;
@@ -24,19 +26,18 @@ public class QuoteService {
     private final QuoteRepository quoteRepository;
     private final JwtService jwtService;
     private final UserService userService;
+    private final LikedQuoteService likedQuoteService;
 
     public Quote findById(Long quoteId) {
         return quoteRepository.findById(quoteId)
                 .orElseThrow(() -> new RuntimeException("Quote not found"));
     }
+
     // 글귀 등록
     @Transactional
     public ResponseSuccessful createQuote(String accessToken, QuoteRequestDto quoteRequestDto) {
         String email = jwtService.getEmailFromToken(accessToken);
         User existingUser = userService.findByEmail(email);
-        if (existingUser == null) {
-            throw new RuntimeException("User not found");
-        }
         quoteRepository.save(Quote.toEntity(existingUser, quoteRequestDto));
         return ResponseSuccessful.builder().success(true).build();
     }
@@ -47,22 +48,15 @@ public class QuoteService {
         // accessToken 주인
         String email = jwtService.getEmailFromToken(accessToken);
         User existingUser = userService.findByEmail(email);
-        if (existingUser == null) {
-            throw new RuntimeException("User not found");
-        }
         // 글귀 주인
-        Quote quote = quoteRepository.findById(quoteUpdateRequestDto.getId()).orElse(null);
-        if (quote == null) {
-            throw new RuntimeException("Quote not found");
-        }
+        Quote quote = findById(quoteUpdateRequestDto.getId());
         // 글귀의 주인인지 판단
         if (existingUser != quote.getUser()) {
             throw new RuntimeException("No permission to update quote");
         }
-        else {
-            quote.update(quoteUpdateRequestDto);
-            return ResponseSuccessful.builder().success(true).build();
-        }
+
+        quote.update(quoteUpdateRequestDto);
+        return ResponseSuccessful.builder().success(true).build();
     }
 
     // 모든 글귀 열람 (WAIT)
@@ -78,26 +72,43 @@ public class QuoteService {
     }
 
     // id로 글귀 1개 찾기 - 특정 글귀 열람, 글귀 좋아요에도 쓰일 듯
-    public QuoteResponse getQuoteById(Long id) {
-       Quote quote = quoteRepository.findById(id).orElse(null);
-       if (quote == null) {
-           throw new RuntimeException("Quote not found");
-       }
-       return new QuoteResponse(quote);
+    @Transactional
+    public QuoteResponse getQuoteById(String accessToken, Long id) {
+        String email = jwtService.getEmailFromToken(accessToken);
+        User existingUser = userService.findByEmail(email);
+        Quote quote = findById(id);
+        // 좋아요 유무 확인
+        boolean isLiked = likedQuoteService.getIsLiked(existingUser, quote);
+       return new QuoteResponse(quote, isLiked);
     }
 
     // 글귀 삭제
-    public void deleteQuoteById(Long id) {
+    public void deleteQuoteById(String accessToken, Long id) {
+        String email = jwtService.getEmailFromToken(accessToken);
+        User existingUser = userService.findByEmail(email);
+        Quote quote = findById(id);
+        // 글귀의 주인인지 판단
+        if (existingUser != quote.getUser()) {
+            throw new RuntimeException("No permission to update quote");
+        }
         quoteRepository.deleteById(id);
     }
 
     // 좋아요 반영
     @Transactional
-    public void increaseLikes(Long id){
-        Quote quote = quoteRepository.findById(id).orElse(null);
-        if (quote != null) {
-            quote.increaseLikes();
+    public void increaseLikes(String accessToken, Long id){
+        String email = jwtService.getEmailFromToken(accessToken);
+        User existingUser = userService.findByEmail(email);
+        Quote quote = findById(id);
+        boolean isLiked = likedQuoteService.getIsLiked(existingUser, quote);
+        if (isLiked){
+            likedQuoteService.deleteByUserAndQuote(existingUser, quote);
+            quote.decreaseLikes();
+            return;
         }
+        likedQuoteService.createByUserAndQuote(existingUser, quote);
+        quote.increaseLikes();
+        quoteRepository.save(quote);
         // quoteRepository.findById(id).ifPresent(Quote::increaseLikes); -> 이렇게 한 줄로 줄여짐;;
     }
 
