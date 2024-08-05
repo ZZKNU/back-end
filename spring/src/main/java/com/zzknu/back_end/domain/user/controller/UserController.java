@@ -1,5 +1,7 @@
 package com.zzknu.back_end.domain.user.controller;
 
+import com.zzknu.back_end.domain.quote.dto.QuoteResponse;
+import com.zzknu.back_end.domain.quote.entity.Quote;
 import com.zzknu.back_end.domain.user.dto.UserInfoDto;
 import com.zzknu.back_end.domain.user.dto.UserRequestDto;
 import com.zzknu.back_end.domain.user.dto.UserUpdateDto;
@@ -10,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -38,6 +42,12 @@ public class UserController {
     public ResponseEntity<Void> deleteUserInfo(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
         userService.deleteUser(accessToken);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "좋아요한 글 목록")
+    @GetMapping("/liked")
+    public ResponseEntity<List<QuoteResponse>> likedQuotes(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
+        return ResponseEntity.ok(userService.getLikedQuotes(accessToken));
     }
 
 }
