@@ -49,21 +49,21 @@ public class QuoteController {
 
     @Operation(summary = "글귀 좋아요 반영")
     @PutMapping({"/challenges/{id}", "/quotes/{id}"})
-    public ResponseEntity<Void> increaseLikes(@PathVariable Long id){
-        quoteService.increaseLikes(id);
+    public ResponseEntity<Void> increaseLikes(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, @PathVariable Long id){
+        quoteService.increaseLikes(accessToken, id);
         return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "id로 글귀 불러오기")
     @GetMapping({"/challenges/{id}", "/quotes/{id}"})
-    public ResponseEntity<QuoteResponse> getQuoteById(@PathVariable Long id) {
-        return ResponseEntity.ok(quoteService.getQuoteById(id));
+    public ResponseEntity<QuoteResponse> getQuoteById(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, @PathVariable Long id) {
+        return ResponseEntity.ok(quoteService.getQuoteById(accessToken, id));
     }
 
     @Operation(summary = "id로 글귀 삭제")
     @DeleteMapping("/challenges/{id}")
-    public ResponseEntity<Void> deleteQuoteById(@PathVariable Long id) {
-        quoteService.deleteQuoteById(id);
+    public ResponseEntity<Void> deleteQuoteById(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, @PathVariable Long id) {
+        quoteService.deleteQuoteById(accessToken, id);
         return ResponseEntity.noContent().build();
     }
 

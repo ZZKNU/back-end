@@ -36,7 +36,6 @@ public class FriendshipController {
         return ResponseEntity.ok(friend);
     }
 
-
     // 친구 목록 - 팔로우
     @Operation(summary = "친구 목록 - 팔로우")
     @GetMapping("/follow")

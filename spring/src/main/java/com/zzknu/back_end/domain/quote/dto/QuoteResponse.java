@@ -3,8 +3,10 @@ package com.zzknu.back_end.domain.quote.dto;
 import com.zzknu.back_end.domain.quote.entity.Quote;
 import com.zzknu.back_end.domain.quote.entity.type.QuoteType;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class QuoteResponse {
     private final Long id;
 
@@ -20,6 +22,8 @@ public class QuoteResponse {
 
     private final int liked;
 
+    private Boolean isLiked;
+
     public QuoteResponse(Quote quote) {
         this.id = quote.getId();
         this.title = quote.getTitle();
@@ -28,5 +32,16 @@ public class QuoteResponse {
         this.author = quote.getAuthor();
         this.certified = quote.getCertified();
         this.liked = quote.getLiked();
+    }
+
+    public QuoteResponse(Quote quote, boolean isLiked) {
+        this.id = quote.getId();
+        this.title = quote.getTitle();
+        this.type = quote.getType();
+        this.content = quote.getContent();
+        this.author = quote.getAuthor();
+        this.certified = quote.getCertified();
+        this.liked = quote.getLiked();
+        this.isLiked = isLiked;
     }
 }

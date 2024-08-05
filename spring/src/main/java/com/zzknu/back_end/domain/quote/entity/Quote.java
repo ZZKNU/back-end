@@ -86,4 +86,8 @@ public class Quote extends BaseEntityWithUpdatedAt {
         this.user = user;
         this.certified = Boolean.FALSE;
     }
+
+    public void decreaseLikes() {
+        this.liked -= 1;
+    }
 }

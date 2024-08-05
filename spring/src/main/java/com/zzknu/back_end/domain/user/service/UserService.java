@@ -50,7 +50,7 @@ public class UserService {
 
     // 이름으로 사용자 검색
     public Page<FriendInfoDto> findUsersByName(String name, Pageable pageable) {
-        Page<User> users = userRepository.findByNickname(name, pageable);
+        Page<User> users = userRepository.findByNicknameContaining(name, pageable);
         if(users.isEmpty()) {
             return Page.empty();
         }
