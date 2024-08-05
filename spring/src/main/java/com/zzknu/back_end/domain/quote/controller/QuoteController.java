@@ -8,6 +8,8 @@ import com.zzknu.back_end.domain.quote.entity.Quote;
 import com.zzknu.back_end.domain.quote.service.QuoteService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,15 +35,16 @@ public class QuoteController {
 
     @Operation(summary = "베스트 도전 글귀 불러오기")
     @GetMapping("/challenges")
-    public ResponseEntity<List<QuoteResponse>> getWaitQuotes(){
-
-        return ResponseEntity.ok(quoteService.getWaitQuotes());
+    public ResponseEntity<List<QuoteResponse>> getWaitQuotes(Pageable pageable){
+        Page<QuoteResponse> quotes = quoteService.getWaitQuotes(pageable);
+        return ResponseEntity.ok(quotes.getContent());
     }
 
     @Operation(summary = "검증된 글귀 불러오기 (모든 글귀 열람)")
     @GetMapping("/quotes")
-    public ResponseEntity<List<QuoteResponse>> getAcceptedQuotes(){
-        return ResponseEntity.ok(quoteService.getAcceptedQuotes());
+    public ResponseEntity<List<QuoteResponse>> getAcceptedQuotes(Pageable pageable){
+        Page<QuoteResponse> quotes = quoteService.getAcceptedQuotes(pageable);
+        return ResponseEntity.ok(quotes.getContent());
     }
 
     @Operation(summary = "글귀 좋아요 반영")
@@ -66,7 +69,8 @@ public class QuoteController {
 
     @Operation(summary = "작가명으로 글귀 검색")
     @GetMapping({"/challenges/search", "/quotes/search"})
-    public ResponseEntity<List<QuoteResponse>> getQuotesByAuthor(@RequestParam("author") String author){
-        return ResponseEntity.ok(quoteService.getQuotesByAuthor(author));
+    public ResponseEntity<List<QuoteResponse>> getQuotesByAuthor(@RequestParam("author") String author, Pageable pageable){
+        Page<QuoteResponse> quotes = quoteService.getQuotesByAuthor(author, pageable);
+        return ResponseEntity.ok(quotes.getContent());
     }
 }

@@ -12,6 +12,8 @@ import com.zzknu.back_end.domain.user.entity.User;
 import com.zzknu.back_end.domain.user.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -65,19 +67,15 @@ public class QuoteService {
     }
 
     // 모든 글귀 열람 (WAIT)
-    public List<QuoteResponse> getWaitQuotes(){
-        List <Quote> quotes = quoteRepository.findByCertified(false);
-        return quotes.stream()
-                .map(QuoteResponse::new)
-                .collect(Collectors.toList());
+    public Page<QuoteResponse> getWaitQuotes(Pageable pageable){
+        Page <Quote> quotes = quoteRepository.findByCertified(false, pageable);
+        return quotes.map(QuoteResponse::new);
     }
 
     // 모든 글귀 열람 (인증된)
-    public List<QuoteResponse> getAcceptedQuotes(){
-        List <Quote> quotes = quoteRepository.findByCertified(true);
-        return quotes.stream()
-                .map(QuoteResponse::new)
-                .collect(Collectors.toList());
+    public Page<QuoteResponse> getAcceptedQuotes(Pageable pageable){
+        Page <Quote> quotes = quoteRepository.findByCertified(true, pageable);
+        return quotes.map(QuoteResponse::new);
     }
 
     // id로 글귀 1개 찾기 - 특정 글귀 열람, 글귀 좋아요에도 쓰일 듯
@@ -105,11 +103,9 @@ public class QuoteService {
     }
 
     // 작성자로 검색
-    public List<QuoteResponse> getQuotesByAuthor(String author) {
-        List<Quote> quotes = quoteRepository.findByAuthor(author);
-        return quotes.stream()
-                .map(QuoteResponse::new)
-                .collect(Collectors.toList());
+    public Page<QuoteResponse> getQuotesByAuthor(String author, Pageable pageable) {
+        Page<Quote> quotes = quoteRepository.findByAuthor(author, pageable);
+        return quotes.map(QuoteResponse::new);
     }
 
     // 제목 검색 기능 and 카테고리별 정렬 기능 미구현
