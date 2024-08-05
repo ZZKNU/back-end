@@ -24,6 +24,9 @@ public class FriendshipService {
     public FriendInfoDto addFriend(String accessToken, Long friendUserId) {
         String email = jwtService.getEmailFromToken(accessToken);
         User fromUser = userService.findByEmail(email);
+        if (fromUser.getId().equals(friendUserId)) {
+            return new FriendInfoDto(new User());
+        }
         User toUser = userService.findById(friendUserId);
         if (friendshipRepository.findFriendshipByIdAndId(fromUser.getId(), toUser.getId()).isPresent()) {
             return new FriendInfoDto(new User());
