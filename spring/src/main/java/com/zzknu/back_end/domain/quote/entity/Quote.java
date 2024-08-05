@@ -5,21 +5,22 @@ import com.zzknu.back_end.domain.likedquote.entity.LikedQuote;
 import com.zzknu.back_end.domain.message.entity.Message;
 import com.zzknu.back_end.domain.quote.dto.QuoteRequestDto;
 import com.zzknu.back_end.domain.quote.dto.QuoteUpdateRequestDto;
-import com.zzknu.back_end.domain.quote.entity.type.CertifiedType;
 import com.zzknu.back_end.domain.quote.entity.type.QuoteType;
 import com.zzknu.back_end.domain.user.entity.User;
+import com.zzknu.back_end.global.BaseEntityWithUpdatedAt;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @NoArgsConstructor
 @Getter
-public class Quote {
+@Setter
+public class Quote extends BaseEntityWithUpdatedAt {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "quote_id")
     private Long id;

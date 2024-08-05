@@ -6,18 +6,17 @@ import com.zzknu.back_end.domain.quote.dto.QuoteResponse;
 import com.zzknu.back_end.domain.quote.dto.QuoteUpdateRequestDto;
 import com.zzknu.back_end.domain.quote.dto.ResponseSuccessful;
 import com.zzknu.back_end.domain.quote.entity.Quote;
-import com.zzknu.back_end.domain.quote.entity.type.CertifiedType;
 import com.zzknu.back_end.domain.quote.repository.QuoteRepository;
 import com.zzknu.back_end.domain.user.entity.User;
 import com.zzknu.back_end.domain.user.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -106,6 +105,30 @@ public class QuoteService {
     public Page<QuoteResponse> getQuotesByAuthor(String author, Pageable pageable) {
         Page<Quote> quotes = quoteRepository.findByAuthor(author, pageable);
         return quotes.map(QuoteResponse::new);
+    }
+
+    public boolean updateQuoteCertify(Long quoteId, Boolean certified) {
+        Quote quote = quoteRepository.findById(quoteId).orElse(null);
+        if (quote == null) {
+            throw new RuntimeException("Quote not found");
+        }
+        quote.setCertified(certified);
+        quoteRepository.save(quote);
+        return true;
+    }
+
+    // 좋아요 10개 이상인 게시글
+    public Page<Quote> getChallengeQuote(Pageable pageable) {
+        List<Quote> challengeQuotes = quoteRepository.findByCertified(false, pageable).getContent();
+        List<Quote> filteredQuotes = challengeQuotes.stream()
+                .filter(quote -> quote.getLikedQuotes().size() >= 10)
+                .toList();
+        // Pageable을 사용하여 결과를 페이지로 나누기
+        int start = Math.toIntExact(pageable.getOffset());
+        int end = Math.min((start + pageable.getPageSize()), filteredQuotes.size());
+        List<Quote> pagedQuotes = filteredQuotes.subList(start, end);
+
+        return new PageImpl<>(pagedQuotes, pageable, filteredQuotes.size());
     }
 
     // 제목 검색 기능 and 카테고리별 정렬 기능 미구현

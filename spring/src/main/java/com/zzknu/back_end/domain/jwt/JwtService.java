@@ -1,6 +1,9 @@
 package com.zzknu.back_end.domain.jwt;
 
 import com.zzknu.back_end.config.JwtConfig;
+import com.zzknu.back_end.domain.user.entity.User;
+import com.zzknu.back_end.domain.user.entity.type.AuthorityType;
+import com.zzknu.back_end.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -8,6 +11,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class JwtService {
     private final JwtConfig jwtConfig;
+    private final UserService userService;
 
     public String generateToken(String email) {
         return jwtConfig.generateToken(email);
@@ -19,5 +23,11 @@ public class JwtService {
 
     public String getEmailFromToken(String token) {
         return jwtConfig.extractEmail(token);
+    }
+
+    public boolean checkAuthority(String accessToken) {
+        String email = getEmailFromToken(accessToken);
+        User user = userService.findByEmail(email);
+        return user.getAuthority() == AuthorityType.ADMIN;
     }
 }
