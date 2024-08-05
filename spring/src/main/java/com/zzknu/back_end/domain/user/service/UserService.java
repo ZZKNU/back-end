@@ -3,6 +3,10 @@ package com.zzknu.back_end.domain.user.service;
 import com.zzknu.back_end.config.JwtConfig;
 import com.zzknu.back_end.domain.friendship.dto.FriendInfoDto;
 import com.zzknu.back_end.domain.jwt.JwtService;
+import com.zzknu.back_end.domain.likedquote.entity.LikedQuote;
+import com.zzknu.back_end.domain.likedquote.repository.LikedQuoteRepository;
+import com.zzknu.back_end.domain.quote.dto.QuoteResponse;
+import com.zzknu.back_end.domain.quote.entity.Quote;
 import com.zzknu.back_end.domain.user.dto.UserInfoDto;
 import com.zzknu.back_end.domain.user.dto.UserUpdateDto;
 import com.zzknu.back_end.domain.user.entity.User;
@@ -13,11 +17,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final JwtService jwtService;
+    private final LikedQuoteRepository likedQuoteRepository;
 
     // 사용자 정보 조회
     public User getUserById(Long userId) {
@@ -78,5 +86,17 @@ public class UserService {
 
     public Page<User> getAllUser(Pageable pageable) {
         return userRepository.findAll(pageable);
+    }
+
+    // 유저가 좋아한 글 불러오기
+    public List<QuoteResponse> getLikedQuotes(String accessToken) {
+        String email = jwtService.getEmailFromToken(accessToken);
+        User user = findByEmail(email);
+        List<QuoteResponse> quoteList = new ArrayList<>();
+        for (LikedQuote lq : user.getLikedQuotes()){
+            Quote quote = lq.getQuote();
+            quoteList.add(new QuoteResponse(quote));
+        }
+        return quoteList;
     }
 }
