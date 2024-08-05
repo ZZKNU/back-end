@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class MessageResponse {
+    private Long id;
     private Long sender_id;
     private Long receiver_id;
     private String sender_nickName;
@@ -19,6 +20,7 @@ public class MessageResponse {
     private LocalDateTime createdAt;
 
     public MessageResponse(Message message) {
+        this.id = message.getId();
         this.sender_id = message.getSendUser().getId();
         this.receiver_id = message.getRecvUser().getId();
         this.sender_nickName = message.getSendUser().getNickname();
