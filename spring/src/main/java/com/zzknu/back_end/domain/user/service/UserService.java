@@ -42,12 +42,11 @@ public class UserService {
 
     // 이름으로 사용자 검색
     public Page<FriendInfoDto> findUsersByName(String name, Pageable pageable) {
-        Page<User> users =  userRepository.findByNickname(name, pageable);
+        Page<User> users = userRepository.findByNickname(name, pageable);
         if(users.isEmpty()) {
             return Page.empty();
         }
-        Page<FriendInfoDto> friendInfoDtos = users.map(FriendInfoDto::new);
-        return friendInfoDtos;
+        return users.map(FriendInfoDto::new);
     }
 
     // Id로 사용자 검색
