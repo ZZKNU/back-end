@@ -54,7 +54,9 @@ public class AdminService {
 
     //  Admin 권한인지 확인
     public boolean checkAuthority(String accessToken){
-        return jwtService.checkAuthority(accessToken);
+        String email =  jwtService.getEmailFromToken(accessToken);
+        User user = userService.findByEmail(email);
+        return user.getAuthority() == AuthorityType.ADMIN;
     }
 
     public Page<UserResponse> getUsers(String accessToken, Pageable pageable) {

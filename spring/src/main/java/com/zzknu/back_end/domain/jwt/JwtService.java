@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class JwtService {
     private final JwtConfig jwtConfig;
-    private final UserService userService;
 
     public String generateToken(String email) {
         return jwtConfig.generateToken(email);
@@ -25,9 +24,4 @@ public class JwtService {
         return jwtConfig.extractEmail(token);
     }
 
-    public boolean checkAuthority(String accessToken) {
-        String email = getEmailFromToken(accessToken);
-        User user = userService.findByEmail(email);
-        return user.getAuthority() == AuthorityType.ADMIN;
-    }
 }
