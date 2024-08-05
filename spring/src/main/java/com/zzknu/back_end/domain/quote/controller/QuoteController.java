@@ -1,6 +1,7 @@
 package com.zzknu.back_end.domain.quote.controller;
 
 import com.zzknu.back_end.domain.quote.dto.QuoteRequestDto;
+import com.zzknu.back_end.domain.quote.dto.QuoteResponse;
 import com.zzknu.back_end.domain.quote.dto.QuoteUpdateRequestDto;
 import com.zzknu.back_end.domain.quote.dto.ResponseSuccessful;
 import com.zzknu.back_end.domain.quote.entity.Quote;
@@ -32,13 +33,14 @@ public class QuoteController {
 
     @Operation(summary = "베스트 도전 글귀 불러오기")
     @GetMapping("/challenges")
-    public ResponseEntity<List<Quote>> getWaitQuotes(){
+    public ResponseEntity<List<QuoteResponse>> getWaitQuotes(){
+
         return ResponseEntity.ok(quoteService.getWaitQuotes());
     }
 
     @Operation(summary = "검증된 글귀 불러오기 (모든 글귀 열람)")
     @GetMapping("/quotes")
-    public ResponseEntity<List<Quote>> getAcceptedQuotes(){
+    public ResponseEntity<List<QuoteResponse>> getAcceptedQuotes(){
         return ResponseEntity.ok(quoteService.getAcceptedQuotes());
     }
 
@@ -51,7 +53,7 @@ public class QuoteController {
 
     @Operation(summary = "id로 글귀 불러오기")
     @GetMapping({"/challenges/{id}", "/quotes/{id}"})
-    public ResponseEntity<Quote> getQuoteById(@PathVariable Long id) {
+    public ResponseEntity<QuoteResponse> getQuoteById(@PathVariable Long id) {
         return ResponseEntity.ok(quoteService.getQuoteById(id));
     }
 
@@ -64,7 +66,7 @@ public class QuoteController {
 
     @Operation(summary = "작가명으로 글귀 검색")
     @GetMapping({"/challenges/search", "/quotes/search"})
-    public ResponseEntity<List<Quote>> getQuotesByAuthor(@RequestParam("author") String author){
+    public ResponseEntity<List<QuoteResponse>> getQuotesByAuthor(@RequestParam("author") String author){
         return ResponseEntity.ok(quoteService.getQuotesByAuthor(author));
     }
 }

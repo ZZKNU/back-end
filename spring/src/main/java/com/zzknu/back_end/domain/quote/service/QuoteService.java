@@ -2,6 +2,7 @@ package com.zzknu.back_end.domain.quote.service;
 
 import com.zzknu.back_end.domain.jwt.JwtService;
 import com.zzknu.back_end.domain.quote.dto.QuoteRequestDto;
+import com.zzknu.back_end.domain.quote.dto.QuoteResponse;
 import com.zzknu.back_end.domain.quote.dto.QuoteUpdateRequestDto;
 import com.zzknu.back_end.domain.quote.dto.ResponseSuccessful;
 import com.zzknu.back_end.domain.quote.entity.Quote;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -63,18 +65,28 @@ public class QuoteService {
     }
 
     // 모든 글귀 열람 (WAIT)
-    public List<Quote> getWaitQuotes(){
-        return quoteRepository.findByCertified(false);
+    public List<QuoteResponse> getWaitQuotes(){
+        List <Quote> quotes = quoteRepository.findByCertified(false);
+        return quotes.stream()
+                .map(QuoteResponse::new)
+                .collect(Collectors.toList());
     }
 
     // 모든 글귀 열람 (인증된)
-    public List<Quote> getAcceptedQuotes(){
-        return quoteRepository.findByCertified(true);
+    public List<QuoteResponse> getAcceptedQuotes(){
+        List <Quote> quotes = quoteRepository.findByCertified(true);
+        return quotes.stream()
+                .map(QuoteResponse::new)
+                .collect(Collectors.toList());
     }
 
     // id로 글귀 1개 찾기 - 특정 글귀 열람, 글귀 좋아요에도 쓰일 듯
-    public Quote getQuoteById(Long id) {
-        return quoteRepository.findById(id).orElse(null);
+    public QuoteResponse getQuoteById(Long id) {
+       Quote quote = quoteRepository.findById(id).orElse(null);
+       if (quote == null) {
+           throw new RuntimeException("Quote not found");
+       }
+       return new QuoteResponse(quote);
     }
 
     // 글귀 삭제
@@ -93,8 +105,11 @@ public class QuoteService {
     }
 
     // 작성자로 검색
-    public List<Quote> getQuotesByAuthor(String author) {
-        return quoteRepository.findByAuthor(author);
+    public List<QuoteResponse> getQuotesByAuthor(String author) {
+        List<Quote> quotes = quoteRepository.findByAuthor(author);
+        return quotes.stream()
+                .map(QuoteResponse::new)
+                .collect(Collectors.toList());
     }
 
     // 제목 검색 기능 and 카테고리별 정렬 기능 미구현
