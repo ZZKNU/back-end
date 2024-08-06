@@ -10,6 +10,7 @@ import com.zzknu.back_end.domain.quote.dto.ResponseSuccessful;
 import com.zzknu.back_end.domain.quote.entity.Quote;
 import com.zzknu.back_end.domain.quote.repository.QuoteRepository;
 import com.zzknu.back_end.domain.user.entity.User;
+import com.zzknu.back_end.domain.user.entity.type.AuthorityType;
 import com.zzknu.back_end.domain.user.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -88,7 +89,7 @@ public class QuoteService {
         User existingUser = userService.findByEmail(email);
         Quote quote = findById(id);
         // 글귀의 주인인지 판단
-        if (existingUser != quote.getUser()) {
+        if (existingUser.getAuthority() != AuthorityType.ADMIN && existingUser != quote.getUser()) {
             throw new RuntimeException("No permission to update quote");
         }
         quoteRepository.deleteById(id);
