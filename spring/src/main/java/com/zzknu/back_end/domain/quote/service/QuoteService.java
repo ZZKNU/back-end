@@ -132,7 +132,7 @@ public class QuoteService {
     public Page<Quote> getChallengeQuote(Pageable pageable) {
         List<Quote> challengeQuotes = quoteRepository.findByCertified(false, pageable).getContent();
         List<Quote> filteredQuotes = challengeQuotes.stream()
-                .filter(quote -> quote.getLikedQuotes().size() >= 10)
+                .filter(quote -> quote.getLiked() >= 10)
                 .toList();
         // Pageable을 사용하여 결과를 페이지로 나누기
         int start = Math.toIntExact(pageable.getOffset());

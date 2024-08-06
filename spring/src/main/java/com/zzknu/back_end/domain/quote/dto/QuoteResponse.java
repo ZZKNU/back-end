@@ -24,6 +24,8 @@ public class QuoteResponse {
 
     private Boolean isLiked;
 
+    private String nickname;
+
     public QuoteResponse(Quote quote) {
         this.id = quote.getId();
         this.title = quote.getTitle();
@@ -32,6 +34,7 @@ public class QuoteResponse {
         this.author = quote.getAuthor();
         this.certified = quote.getCertified();
         this.liked = quote.getLiked();
+        this.nickname = quote.getUser().getNickname();
     }
 
     public QuoteResponse(Quote quote, boolean isLiked) {
@@ -43,5 +46,6 @@ public class QuoteResponse {
         this.certified = quote.getCertified();
         this.liked = quote.getLiked();
         this.isLiked = isLiked;
+        this.nickname = quote.getUser().getNickname();
     }
 }

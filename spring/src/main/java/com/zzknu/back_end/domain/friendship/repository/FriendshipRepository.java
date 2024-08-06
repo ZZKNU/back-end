@@ -3,7 +3,6 @@ package com.zzknu.back_end.domain.friendship.repository;
 
 import com.zzknu.back_end.domain.friendship.entity.Friendship;
 import com.zzknu.back_end.domain.user.entity.User;
-import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,4 +25,7 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
     Page<User> findFollowersByEmail(String email, Pageable pageable);
 
     Optional<Friendship> findFriendshipByIdAndId(Long fromId, Long toId);
+
+    @Query("SELECT f FROM Friendship f WHERE f.from_user = :fromUser and f.to_user = :toUser")
+    Friendship findByUserAndUser(User fromUser, User toUser);
 }
