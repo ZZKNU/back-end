@@ -66,6 +66,6 @@ public class FriendshipService {
         User fromUser = userService.findByEmail(email);
         User toUser = userService.findById(id);
         Friendship friendship = friendshipRepository.findByUserAndUser(fromUser, toUser);
-        friendshipRepository.deleteById(friendship.getId());
+        friendshipRepository.delete(friendship);
     }
 }
