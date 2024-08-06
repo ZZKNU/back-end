@@ -105,6 +105,7 @@ public class QuoteService {
         if (isLiked){
             likedQuoteService.deleteByUserAndQuote(existingUser, quote);
             quote.decreaseLikes();
+            quoteRepository.save(quote);
             return;
         }
         likedQuoteService.createByUserAndQuote(existingUser, quote);
