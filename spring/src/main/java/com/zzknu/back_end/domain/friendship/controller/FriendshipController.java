@@ -55,9 +55,9 @@ public class FriendshipController {
     // 친구 삭제
     @Operation(summary = "친구 삭제")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFriend(@PathVariable Long id) {
-        friendshipService.deleteFriend(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Void> deleteFriend(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, @PathVariable Long id) {
+        friendshipService.deleteFriend(accessToken, id);
+        return ResponseEntity.ok().build();
     }
 
 }

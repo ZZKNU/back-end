@@ -38,7 +38,7 @@ public class FriendshipService {
         }
     }
 
-    // 친구 목록 - 팔로우
+    // 친구 목록 - 팔로잉
     public Page<FriendInfoDto> getFollowing(String accessToken, Pageable pageable) {
         String email = jwtService.getEmailFromToken(accessToken);
         Page<User> followingUsers = friendshipRepository.findFollowingByEmail(email, pageable);
@@ -61,7 +61,11 @@ public class FriendshipService {
     }
 
     // 친구 삭제
-    public void deleteFriend(Long id) {
-        friendshipRepository.deleteById(id);
+    public void deleteFriend(String accessToken, Long id) {
+        String email = jwtService.getEmailFromToken(accessToken);
+        User fromUser = userService.findByEmail(email);
+        User toUser = userService.findById(id);
+        Friendship friendship = friendshipRepository.findByUserAndUser(fromUser, toUser);
+        friendshipRepository.deleteById(friendship.getId());
     }
 }
