@@ -1,4 +1,5 @@
 spring:
+  # MySQL 관련 설정
   application:
     name: back-end
   jpa:
