@@ -13,6 +13,7 @@ public class QuoteRequestDto {
     private String title;
     @Enumerated(EnumType.STRING)
     private QuoteType quoteType;
+    private String category;
     private String content;
     private String author;
     // Category에 대한 생각?

@@ -1,8 +1,10 @@
 package com.zzknu.back_end.domain.admin.service;
 
 import com.zzknu.back_end.domain.admin.dto.UserResponse;
+import com.zzknu.back_end.domain.category.service.CategoryService;
 import com.zzknu.back_end.domain.jwt.JwtService;
 import com.zzknu.back_end.domain.quote.dto.QuoteResponse;
+import com.zzknu.back_end.domain.quote.dto.ResponseSuccessful;
 import com.zzknu.back_end.domain.quote.entity.Quote;
 import com.zzknu.back_end.domain.quote.service.QuoteService;
 import com.zzknu.back_end.domain.user.entity.User;
@@ -14,12 +16,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AdminService {
     private final UserService userService;
     private final JwtService jwtService;
     private final QuoteService quoteService;
+    private final CategoryService categoryService;
 
     // 유저 권한 변경
     @Transactional
@@ -66,5 +72,24 @@ public class AdminService {
             return users.map(UserResponse::new);
         }
         return null;
+    }
+
+    // 모든 카테고리 열람
+    public List<String> getAllCategories(String accessToken) {
+        String email = jwtService.getEmailFromToken(accessToken);
+        User existingUser = userService.findByEmail(email);
+        if (existingUser.getAuthority() != AuthorityType.ADMIN)
+            return new ArrayList<>();
+        return categoryService.getAllCategories();
+    }
+
+    // 카테고리 생성
+    public ResponseSuccessful createCategory(String accessToken, String category){
+        return categoryService.createCategory(accessToken, category);
+    }
+
+    // 특정 카테고리 삭제
+    public ResponseSuccessful deleteCategory(String accessToken, Long id){
+        return categoryService.deleteCategory(accessToken, id);
     }
 }
