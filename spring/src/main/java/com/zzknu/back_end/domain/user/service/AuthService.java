@@ -2,6 +2,7 @@ package com.zzknu.back_end.domain.user.service;
 
 import com.zzknu.back_end.config.JwtConfig;
 import com.zzknu.back_end.domain.jwt.JwtService;
+import com.zzknu.back_end.domain.user.dto.FindIdDto;
 import com.zzknu.back_end.domain.user.dto.LoginRequestDto;
 import com.zzknu.back_end.domain.user.dto.Response;
 import com.zzknu.back_end.domain.user.dto.UserRequestDto;
@@ -46,5 +47,11 @@ public class AuthService {
     }
 
 
-
+    public String findId(FindIdDto findIdDto) {
+        User user = userRepository.findByNameAndPhone(findIdDto.getName(), findIdDto.getPhone());
+        if (user == null) {
+            return "해당하는 회원이 없습니다.";
+        }
+        return user.getEmail();
+    }
 }

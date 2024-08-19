@@ -1,5 +1,6 @@
 package com.zzknu.back_end.domain.user.controller;
 
+import com.zzknu.back_end.domain.user.dto.FindIdDto;
 import com.zzknu.back_end.domain.user.dto.LoginRequestDto;
 import com.zzknu.back_end.domain.user.dto.Response;
 import com.zzknu.back_end.domain.user.dto.UserRequestDto;
@@ -40,6 +41,12 @@ public class AuthController {
     @GetMapping("/nickname/{nickname}")
     public ResponseEntity<Boolean> nicknameExist(@RequestParam String nickname) {
         return ResponseEntity.ok(authService.nicknameExists(nickname));
+    }
+
+    @Operation(summary = "아이디 찾기")
+    @PostMapping("/findID")
+    public ResponseEntity<String> findID(@RequestBody FindIdDto findIdDto) {
+        return ResponseEntity.ok(authService.findId(findIdDto));
     }
 
 
