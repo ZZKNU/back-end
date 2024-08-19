@@ -39,6 +39,12 @@ public class User extends BaseEntityWithUpdatedAt {
     @Column(nullable = false)
     private LocalDate birthdate;
 
+    @Column(nullable = false)
+    private String phone;
+
+    @Column(nullable = false)
+    private String name;
+
     private AuthorityType authority = AuthorityType.USER;
 
 
