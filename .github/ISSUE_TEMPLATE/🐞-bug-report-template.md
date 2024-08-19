@@ -1,5 +1,5 @@
 ---
-name: "\U0001F41EBug Report Template"
+name: "\U0001F41E Bug Report Template"
 about: 버그가 발생한 상황과 수정 내역을 적습니다.
 title: "[Bug]"
 labels: ''
