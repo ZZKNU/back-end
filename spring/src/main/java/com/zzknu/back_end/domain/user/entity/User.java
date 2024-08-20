@@ -39,6 +39,12 @@ public class User extends BaseEntityWithUpdatedAt {
     @Column(nullable = false)
     private LocalDate birthdate;
 
+    @Column(nullable = false)
+    private String phone;
+
+    @Column(nullable = false)
+    private String name;
+
     private AuthorityType authority = AuthorityType.USER;
 
 
@@ -70,14 +76,22 @@ public class User extends BaseEntityWithUpdatedAt {
                 .password(userRequestDto.getPassword())
                 .nickName(userRequestDto.getNickname())
                 .birthDate(userRequestDto.getBirthdate())
+                .name(userRequestDto.getName())
+                .phone(userRequestDto.getPhone())
                 .build();
     }
 
     @Builder
-    public User(String email, String password, String nickName, LocalDate birthDate) {
+    public User(String email, String password, String nickName, LocalDate birthDate, String name, String phone, AuthorityType authority) {
         this.email = email;
         this.password = password;
         this.nickname = nickName;
         this.birthdate = birthDate;
+        this.name = name;
+        this.phone = phone;
+    }
+
+    public void updatePassword(String temporaryPassword) {
+        this.password = temporaryPassword;
     }
 }

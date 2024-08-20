@@ -13,4 +13,6 @@ public class UserRequestDto {
     private String password;
     private String nickname;
     private LocalDate birthdate;
+    private String phone;
+    private String name;
 }

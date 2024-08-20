@@ -1,9 +1,6 @@
 package com.zzknu.back_end.domain.user.controller;
 
-import com.zzknu.back_end.domain.user.dto.LoginRequestDto;
-import com.zzknu.back_end.domain.user.dto.Response;
-import com.zzknu.back_end.domain.user.dto.UserRequestDto;
-import com.zzknu.back_end.domain.user.entity.User;
+import com.zzknu.back_end.domain.user.dto.*;
 import com.zzknu.back_end.domain.user.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -42,5 +39,22 @@ public class AuthController {
         return ResponseEntity.ok(authService.nicknameExists(nickname));
     }
 
+    @Operation(summary = "아이디 찾기")
+    @PostMapping("/find/id")
+    public ResponseEntity<String> findEmail(@RequestBody FindEmailDto findEmailDto) {
+        return ResponseEntity.ok(authService.findEmail(findEmailDto));
+    }
 
+    @Operation(summary = "비밀번호 재발급")
+    @PostMapping("/find/pw")
+    public ResponseEntity<Object> createNewPassword(@RequestBody FindPasswordDto findPasswordDto) {
+        authService.createNewPassword(findPasswordDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "비밀번호 변경")
+    @PostMapping("/change/pw")
+    public ResponseEntity<Object> changePassword(@RequestBody ChagePasswordDto chagePasswordDto) {
+        return ResponseEntity.ok(authService.chagePassword(chagePasswordDto));
+    }
 }

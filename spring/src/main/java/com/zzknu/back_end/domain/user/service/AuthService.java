@@ -1,19 +1,19 @@
 package com.zzknu.back_end.domain.user.service;
 
-import com.zzknu.back_end.config.JwtConfig;
 import com.zzknu.back_end.domain.jwt.JwtService;
-import com.zzknu.back_end.domain.user.dto.LoginRequestDto;
-import com.zzknu.back_end.domain.user.dto.Response;
-import com.zzknu.back_end.domain.user.dto.UserRequestDto;
+import com.zzknu.back_end.domain.user.dto.*;
 import com.zzknu.back_end.domain.user.entity.User;
 import com.zzknu.back_end.domain.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
+    private final UserService userService;
     private final UserRepository userRepository;
     private final JwtService jwtService;
 
@@ -45,6 +45,35 @@ public class AuthService {
         return userRepository.findByNickname(nickname).isPresent();
     }
 
+    public String findEmail(FindEmailDto findEmailDto) {
+        User user = userRepository.findByNameAndPhone(findEmailDto.getName(), findEmailDto.getPhone());
+        if (user == null) {
+            return "해당하는 회원이 없습니다.";
+        }
+        return user.getEmail();
+    }
 
+    public String chagePassword(ChagePasswordDto chagePasswordDto) {
+        User user = userService.findByEmail(chagePasswordDto.getEmail());
+        if (user == null) {
+            return "아이디를 확인하세요";
+        }
+        if (!Objects.equals(user.getPassword(), chagePasswordDto.getOldPassword())){
+            return "기존 비밀번호를 확인하세요";
+        }
+        user.setPassword(chagePasswordDto.getNewPassword());
+        return "비밀번호 변경에 성공하였습니다.";
+    }
 
+    public String createNewPassword(FindPasswordDto findPasswordDto) {
+        User user = userRepository.findByNameAndPhone(findPasswordDto.getName(), findPasswordDto.getPhone());
+        if (user == null) {
+            return "해당하는 회원이 없습니다.";
+        }
+        if (!Objects.equals(user.getEmail(), findPasswordDto.getEmail())) {
+            return "아이디를 확인하세요";
+        }
+        String tempPassword = userService.createNewPassword(user);
+        return "비밀번호가 발급되었습니다.";
+    }
 }
