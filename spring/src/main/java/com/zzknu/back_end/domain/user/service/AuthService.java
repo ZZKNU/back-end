@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
+import static com.zzknu.back_end.global.GolbalMessage.*;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -56,24 +58,25 @@ public class AuthService {
     public String chagePassword(ChagePasswordDto chagePasswordDto) {
         User user = userService.findByEmail(chagePasswordDto.getEmail());
         if (user == null) {
-            return "아이디를 확인하세요";
+            return ERROR_EMAIL_NOT_FOUND;
         }
         if (!Objects.equals(user.getPassword(), chagePasswordDto.getOldPassword())){
-            return "기존 비밀번호를 확인하세요";
+            return ERROR_PASSWORD_MISMATCH;
         }
         user.setPassword(chagePasswordDto.getNewPassword());
-        return "비밀번호 변경에 성공하였습니다.";
+        userRepository.save(user);
+        return SUCCESS_PASSWORD_CHANGED;
     }
 
     public String createNewPassword(FindPasswordDto findPasswordDto) {
         User user = userRepository.findByNameAndPhone(findPasswordDto.getName(), findPasswordDto.getPhone());
         if (user == null) {
-            return "해당하는 회원이 없습니다.";
+            return ERROR_MEMBER_NOT_FOUND;
         }
         if (!Objects.equals(user.getEmail(), findPasswordDto.getEmail())) {
-            return "아이디를 확인하세요";
+            return ERROR_EMAIL_NOT_FOUND;
         }
         String tempPassword = userService.createNewPassword(user);
-        return "비밀번호가 발급되었습니다.";
+        return SUCCESS_TEMP_PASSWORD_ISSUED;
     }
 }
