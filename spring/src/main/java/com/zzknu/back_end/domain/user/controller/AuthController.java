@@ -45,10 +45,17 @@ public class AuthController {
         return ResponseEntity.ok(authService.findEmail(findEmailDto));
     }
 
+    @Operation(summary = "비밀번호 재발급")
     @PostMapping("/find/pw")
     public ResponseEntity<Object> createNewPassword(@RequestBody FindPasswordDto findPasswordDto) {
+
         return ResponseEntity.ok().build();
     }
 
-
+    @Operation(summary = "비밀번호 변경")
+    @PostMapping("/change/pw")
+    public ResponseEntity<Object> changePassword(@RequestBody ChagePasswordDto chagePasswordDto) {
+        authService.chagePassword(chagePasswordDto);
+        return ResponseEntity.ok().build();
+    }
 }
