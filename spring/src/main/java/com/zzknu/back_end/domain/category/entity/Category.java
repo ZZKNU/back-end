@@ -16,15 +16,21 @@ public class Category extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
     private Long id;
-    private String category;
+    private String categoryName;
+    // 예시 - 사랑 우정 행복 희망 격려
+
 
     // quote와 1:N 관계
     @OneToMany(mappedBy = "category")
     private List<Quote> quotes;
 
     @Builder
-    public Category(String category) {
-        this.category = category;
+    public Category(String categoryName) {
+        this.categoryName = categoryName;
     }
     // toEntity 추가 여부
+
+    public void addQuote(Quote quote) {
+        this.quotes.add(quote);
+    }
 }

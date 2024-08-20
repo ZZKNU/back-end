@@ -7,4 +7,5 @@ import lombok.Getter;
 @Getter
 public class ResponseSuccessful {
     private Boolean success;
+    private String log;
 }

@@ -9,10 +9,10 @@ import lombok.Getter;
 @Builder
 @Getter
 public class QuoteRequestDto {
-    private Long id;
     private String title;
     @Enumerated(EnumType.STRING)
     private QuoteType quoteType;
+    private String category;
     private String content;
     private String author;
     // Category에 대한 생각?

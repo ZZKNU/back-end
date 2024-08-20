@@ -2,6 +2,7 @@ package com.zzknu.back_end.domain.admin.controller;
 
 import com.zzknu.back_end.domain.admin.dto.UserResponse;
 import com.zzknu.back_end.domain.admin.service.AdminService;
+import com.zzknu.back_end.domain.category.dto.ResponseWithLog;
 import com.zzknu.back_end.domain.quote.dto.QuoteResponse;
 import com.zzknu.back_end.domain.user.entity.type.AuthorityType;
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,5 +45,23 @@ public class AdminController {
     public ResponseEntity<List<UserResponse>> getUsers(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, Pageable pageable) {
         Page<UserResponse> users = adminService.getUsers(accessToken, pageable);
         return ResponseEntity.ok(users.getContent());
+    }
+
+    @Operation(summary = "모든 카테고리 가져오기")
+    @GetMapping("/category")
+    public ResponseEntity<List<String>> getCategories(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
+        return ResponseEntity.ok(adminService.getAllCategories(accessToken));
+    }
+
+    @Operation(summary = "새로운 카테고리 생성")
+    @PostMapping("/category")
+    public ResponseEntity<ResponseWithLog> createCategory(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, @RequestBody String category){
+        return ResponseEntity.ok(adminService.createCategory(accessToken, category));
+    }
+
+    @Operation(summary = "특정 카테고리 삭제")
+    @DeleteMapping("/category/{id}")
+    public ResponseEntity<ResponseWithLog> deleteCategory(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken, @PathVariable Long id){
+        return ResponseEntity.ok(adminService.deleteCategory(accessToken, id));
     }
 }
