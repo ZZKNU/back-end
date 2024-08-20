@@ -9,7 +9,6 @@ import lombok.Getter;
 @Builder
 @Getter
 public class QuoteRequestDto {
-    private Long id;
     private String title;
     @Enumerated(EnumType.STRING)
     private QuoteType quoteType;

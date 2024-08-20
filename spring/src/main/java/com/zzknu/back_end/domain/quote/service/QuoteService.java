@@ -1,5 +1,7 @@
 package com.zzknu.back_end.domain.quote.service;
 
+import com.zzknu.back_end.domain.category.entity.Category;
+import com.zzknu.back_end.domain.category.service.CategoryService;
 import com.zzknu.back_end.domain.jwt.JwtService;
 import com.zzknu.back_end.domain.likedquote.entity.LikedQuote;
 import com.zzknu.back_end.domain.likedquote.service.LikedQuoteService;
@@ -28,6 +30,7 @@ public class QuoteService {
     private final JwtService jwtService;
     private final UserService userService;
     private final LikedQuoteService likedQuoteService;
+    private final CategoryService categoryService;
 
     public Quote findById(Long quoteId) {
         return quoteRepository.findById(quoteId)
@@ -39,7 +42,11 @@ public class QuoteService {
     public ResponseSuccessful createQuote(String accessToken, QuoteRequestDto quoteRequestDto) {
         String email = jwtService.getEmailFromToken(accessToken);
         User existingUser = userService.findByEmail(email);
-        quoteRepository.save(Quote.toEntity(existingUser, quoteRequestDto));
+        // 카테고리 찾기
+        Category category = categoryService.findCategoryByName(quoteRequestDto.getCategory());
+        Quote newQuote = Quote.toEntity(existingUser, quoteRequestDto, category);
+        category.addQuote(newQuote);
+        quoteRepository.save(newQuote);
         return ResponseSuccessful.builder().success(true).build();
     }
 
@@ -125,7 +132,7 @@ public class QuoteService {
         if (quote == null) {
             throw new RuntimeException("Quote not found");
         }
-        quote.setCertified(certified);
+        quote.update(certified);
         quoteRepository.save(quote);
         return true;
     }

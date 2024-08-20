@@ -19,7 +19,6 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Getter
-@Setter
 public class Quote extends BaseEntityWithUpdatedAt {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "quote_id")
@@ -60,6 +59,10 @@ public class Quote extends BaseEntityWithUpdatedAt {
         this.liked += 1;
     }
 
+    public void update(Boolean certified){
+        this.certified = certified;
+    }
+
     public void update(QuoteUpdateRequestDto quoteUpdateRequestDto) {
         this.title = quoteUpdateRequestDto.getTitle();
         this.content = quoteUpdateRequestDto.getContent();
@@ -67,12 +70,13 @@ public class Quote extends BaseEntityWithUpdatedAt {
         this.type = quoteUpdateRequestDto.getQuoteType();
     }
 
-    public static Quote toEntity(User userInfo, QuoteRequestDto quoteRequestDto) {
+    public static Quote toEntity(User userInfo, QuoteRequestDto quoteRequestDto, Category category) {
         return Quote.builder().title(quoteRequestDto.getTitle())
                 .content(quoteRequestDto.getContent())
                 .author(quoteRequestDto.getAuthor())
                 .quoteType(quoteRequestDto.getQuoteType())
                 .user(userInfo)
+                .category(category)
                 .build();
     }
 

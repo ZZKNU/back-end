@@ -1,5 +1,6 @@
 package com.zzknu.back_end.domain.quote.controller;
 
+import com.zzknu.back_end.domain.category.service.CategoryService;
 import com.zzknu.back_end.domain.quote.dto.QuoteRequestDto;
 import com.zzknu.back_end.domain.quote.dto.QuoteResponse;
 import com.zzknu.back_end.domain.quote.dto.QuoteUpdateRequestDto;
@@ -20,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QuoteController {
     private final QuoteService quoteService;
+    private final CategoryService categoryService;
 
     @Operation(summary = "글귀 작성")
     @PostMapping("/challenges")
@@ -72,5 +74,11 @@ public class QuoteController {
     public ResponseEntity<List<QuoteResponse>> getQuotesByAuthor(@RequestParam("author") String author, Pageable pageable){
         Page<QuoteResponse> quotes = quoteService.getQuotesByAuthor(author, pageable);
         return ResponseEntity.ok(quotes.getContent());
+    }
+
+    @Operation(summary = "글 작성란에서 카테고리 불러오기")
+    @GetMapping("/challenges/category")
+    public ResponseEntity<List<String>> getCategories(){
+        return ResponseEntity.ok(categoryService.getAllCategories());
     }
 }

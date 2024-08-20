@@ -1,5 +1,6 @@
 package com.zzknu.back_end.domain.quote.dto;
 
+import com.zzknu.back_end.domain.category.entity.Category;
 import com.zzknu.back_end.domain.quote.entity.Quote;
 import com.zzknu.back_end.domain.quote.entity.type.QuoteType;
 import lombok.Getter;
@@ -18,13 +19,15 @@ public class QuoteResponse {
 
     private final String author;
 
-    private final Boolean certified ;
+    private final Boolean certified;
 
     private final int liked;
 
     private Boolean isLiked;
 
     private String nickname;
+
+    private String categoryName;
 
     public QuoteResponse(Quote quote) {
         this.id = quote.getId();
@@ -47,5 +50,6 @@ public class QuoteResponse {
         this.liked = quote.getLiked();
         this.isLiked = isLiked;
         this.nickname = quote.getUser().getNickname();
+        this.categoryName = quote.getCategory().getCategoryName();
     }
 }

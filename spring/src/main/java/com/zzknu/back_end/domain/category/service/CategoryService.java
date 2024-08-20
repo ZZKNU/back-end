@@ -29,7 +29,7 @@ public class CategoryService {
         User existingUser = userService.findByEmail(email);
         if (existingUser.getAuthority() != AuthorityType.ADMIN)
             return ResponseWithLog.builder().success(false).log("Not ADMIN.").build();
-        categoryRepository.save(Category.builder().category(categoryName).build());
+        categoryRepository.save(Category.builder().categoryName(categoryName).build());
         return ResponseWithLog.builder().success(true).build();
     }
 
@@ -46,7 +46,12 @@ public class CategoryService {
     // 모든 카테고리 열람
     public List<String> getAllCategories() {
         return categoryRepository.findAll().stream()
-                .map(Category::getCategory)
+                .map(Category::getCategoryName)
                 .collect(Collectors.toList());
+    }
+
+    // 카테고리 이름으로 특정 카테고리 반환
+    public Category findCategoryByName(String categoryName) {
+        return categoryRepository.findByCategoryName(categoryName).orElseThrow(() -> new RuntimeException("Category not found."));
     }
 }
