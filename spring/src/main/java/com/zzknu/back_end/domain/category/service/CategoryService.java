@@ -1,9 +1,9 @@
 package com.zzknu.back_end.domain.category.service;
 
+import com.zzknu.back_end.domain.category.dto.ResponseWithLog;
 import com.zzknu.back_end.domain.category.entity.Category;
 import com.zzknu.back_end.domain.category.repository.CategoryRepository;
 import com.zzknu.back_end.domain.jwt.JwtService;
-import com.zzknu.back_end.domain.quote.dto.ResponseSuccessful;
 import com.zzknu.back_end.domain.user.entity.User;
 import com.zzknu.back_end.domain.user.entity.type.AuthorityType;
 import com.zzknu.back_end.domain.user.service.UserService;
@@ -24,23 +24,23 @@ public class CategoryService {
 
     // 관리자의 카테고리 생성 - 수정은 삭제 후 생성으로 해결
     @Transactional
-    public ResponseSuccessful createCategory(String accessToken, String categoryName) {
+    public ResponseWithLog createCategory(String accessToken, String categoryName) {
         String email = jwtService.getEmailFromToken(accessToken);
         User existingUser = userService.findByEmail(email);
         if (existingUser.getAuthority() != AuthorityType.ADMIN)
-            return ResponseSuccessful.builder().success(false).log("Not ADMIN.").build();
+            return ResponseWithLog.builder().success(false).log("Not ADMIN.").build();
         categoryRepository.save(Category.builder().category(categoryName).build());
-        return ResponseSuccessful.builder().success(true).build();
+        return ResponseWithLog.builder().success(true).build();
     }
 
     // 관리자의 카테고리 삭제
-    public ResponseSuccessful deleteCategory(String accessToken, Long id) {
+    public ResponseWithLog deleteCategory(String accessToken, Long id) {
         String email = jwtService.getEmailFromToken(accessToken);
         User existingUser = userService.findByEmail(email);
         if (existingUser.getAuthority() != AuthorityType.ADMIN)
-            return ResponseSuccessful.builder().success(false).log("Not ADMIN.").build();
+            return ResponseWithLog.builder().success(false).log("Not ADMIN.").build();
         categoryRepository.deleteById(id);
-        return ResponseSuccessful.builder().success(true).build();
+        return ResponseWithLog.builder().success(true).build();
     }
 
     // 모든 카테고리 열람

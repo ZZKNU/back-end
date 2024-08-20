@@ -1,6 +1,7 @@
 package com.zzknu.back_end.domain.admin.service;
 
 import com.zzknu.back_end.domain.admin.dto.UserResponse;
+import com.zzknu.back_end.domain.category.dto.ResponseWithLog;
 import com.zzknu.back_end.domain.category.service.CategoryService;
 import com.zzknu.back_end.domain.jwt.JwtService;
 import com.zzknu.back_end.domain.quote.dto.QuoteResponse;
@@ -84,12 +85,12 @@ public class AdminService {
     }
 
     // 카테고리 생성
-    public ResponseSuccessful createCategory(String accessToken, String category){
+    public ResponseWithLog createCategory(String accessToken, String category){
         return categoryService.createCategory(accessToken, category);
     }
 
     // 특정 카테고리 삭제
-    public ResponseSuccessful deleteCategory(String accessToken, Long id){
+    public ResponseWithLog deleteCategory(String accessToken, Long id){
         return categoryService.deleteCategory(accessToken, id);
     }
 }

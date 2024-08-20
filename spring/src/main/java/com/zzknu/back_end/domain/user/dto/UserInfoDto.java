@@ -8,12 +8,14 @@ import java.time.LocalDate;
 
 @Getter
 public class UserInfoDto {
-    private String email;
-    private String nickname;
-    private LocalDate birthdate;
-    private AuthorityType authority;
+    private final Long id;
+    private final String email;
+    private final String nickname;
+    private final LocalDate birthdate;
+    private final AuthorityType authority;
 
     public UserInfoDto(User user) {
+        this.id = user.getId();
         this.email = user.getEmail();
         this.nickname = user.getNickname();
         this.birthdate = user.getBirthdate();
