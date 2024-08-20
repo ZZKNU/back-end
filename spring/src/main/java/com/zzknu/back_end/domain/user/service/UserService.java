@@ -1,6 +1,5 @@
 package com.zzknu.back_end.domain.user.service;
 
-import com.zzknu.back_end.config.JwtConfig;
 import com.zzknu.back_end.domain.friendship.dto.FriendInfoDto;
 import com.zzknu.back_end.domain.jwt.JwtService;
 import com.zzknu.back_end.domain.likedquote.entity.LikedQuote;
@@ -15,8 +14,13 @@ import com.zzknu.back_end.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +30,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final LikedQuoteRepository likedQuoteRepository;
+    private static final int TEMP_PASSWORD_LENGTH = 8;
+    private final JavaMailSender emailSender;
 
     // 사용자 정보 조회
     public User getUserById(Long userId) {
@@ -98,5 +104,33 @@ public class UserService {
             quoteList.add(new QuoteResponse(quote));
         }
         return quoteList;
+    }
+
+    @Transactional
+    public String createNewPassword(User user) {
+        String tempPassword = generateRandomPassword();
+        user.updatePassword(tempPassword);
+        sendEmail(user.getEmail(), tempPassword);
+        return tempPassword;
+    }
+
+    private String generateRandomPassword() {
+        SecureRandom random = new SecureRandom();
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder password = new StringBuilder(TEMP_PASSWORD_LENGTH);
+        for (int i = 0; i < TEMP_PASSWORD_LENGTH; i++) {
+            password.append(characters.charAt(random.nextInt(characters.length())));
+        }
+        return password.toString();
+    }
+
+    @Async
+    public void sendEmail(String to, String temporaryPassword) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject("[푸글] 비밀번호 재발급 안내");
+        message.setText(
+                "새로 생성된 비밀번호 입니다: " + temporaryPassword + "\n\n해당 비밀번호로 로그인 후 반드시 비밀번호를 변경해 주시기 바랍니다.");
+        emailSender.send(message);
     }
 }

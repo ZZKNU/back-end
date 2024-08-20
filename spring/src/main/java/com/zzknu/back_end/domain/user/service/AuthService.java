@@ -64,4 +64,16 @@ public class AuthService {
         user.setPassword(chagePasswordDto.getNewPassword());
         return "비밀번호 변경에 성공하였습니다.";
     }
+
+    public String createNewPassword(FindPasswordDto findPasswordDto) {
+        User user = userRepository.findByNameAndPhone(findPasswordDto.getName(), findPasswordDto.getPhone());
+        if (user == null) {
+            return "해당하는 회원이 없습니다.";
+        }
+        if (!Objects.equals(user.getEmail(), findPasswordDto.getEmail())) {
+            return "아이디를 확인하세요";
+        }
+        String tempPassword = userService.createNewPassword(user);
+        return "비밀번호가 발급되었습니다.";
+    }
 }

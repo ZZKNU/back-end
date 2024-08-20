@@ -90,4 +90,8 @@ public class User extends BaseEntityWithUpdatedAt {
         this.name = name;
         this.phone = phone;
     }
+
+    public void updatePassword(String temporaryPassword) {
+        this.password = temporaryPassword;
+    }
 }
