@@ -1,10 +1,6 @@
 package com.zzknu.back_end.domain.user.controller;
 
-import com.zzknu.back_end.domain.user.dto.FindIdDto;
-import com.zzknu.back_end.domain.user.dto.LoginRequestDto;
-import com.zzknu.back_end.domain.user.dto.Response;
-import com.zzknu.back_end.domain.user.dto.UserRequestDto;
-import com.zzknu.back_end.domain.user.entity.User;
+import com.zzknu.back_end.domain.user.dto.*;
 import com.zzknu.back_end.domain.user.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -44,9 +40,14 @@ public class AuthController {
     }
 
     @Operation(summary = "아이디 찾기")
-    @PostMapping("/findID")
-    public ResponseEntity<String> findID(@RequestBody FindIdDto findIdDto) {
-        return ResponseEntity.ok(authService.findId(findIdDto));
+    @PostMapping("/find/id")
+    public ResponseEntity<String> findEmail(@RequestBody FindEmailDto findEmailDto) {
+        return ResponseEntity.ok(authService.findEmail(findEmailDto));
+    }
+
+    @PostMapping("/find/pw")
+    public ResponseEntity<Object> createNewPassword(@RequestBody FindPasswordDto findPasswordDto) {
+        return ResponseEntity.ok().build();
     }
 
 
